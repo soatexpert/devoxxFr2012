@@ -1,0 +1,22 @@
+<web-fragment>
+    <servlet>
+        <description></description>
+        <display-name>GiveResponse</display-name>
+        <servlet-name>GiveResponse</servlet-name>
+        <servlet-class>fr.soat.devoxx.game.servlets.ResponseServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>GiveResponse</servlet-name>
+        <url-pattern>/GiveResponse</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <description></description>
+        <display-name>AllQuestions</display-name>
+        <servlet-name>AllQuestions</servlet-name>
+        <servlet-class>fr.soat.devoxx.game.servlets.QuestionServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AllQuestions</servlet-name>
+        <url-pattern>/AllQuestions</url-pattern>
+    </servlet-mapping>
+</web-fragment>

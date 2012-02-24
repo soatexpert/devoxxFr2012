@@ -20,7 +20,7 @@
 
 	<filter-mapping>
 		<filter-name>springSecurityFilterChain</filter-name>
-		<url-pattern>/*</url-pattern>
+		<url-pattern>/admin/*</url-pattern>
 	</filter-mapping>
 
 	<servlet>
@@ -31,7 +31,7 @@
 
 	<servlet-mapping>
 		<servlet-name>spring-mvc-dispatcher</servlet-name>
-		<url-pattern>/</url-pattern>
+		<url-pattern>/admin</url-pattern>
 	</servlet-mapping>
 
 	<listener>

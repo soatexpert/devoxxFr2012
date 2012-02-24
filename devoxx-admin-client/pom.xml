@@ -1,133 +1,56 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>fr.soat.devoxxfr.game.web</groupId>
-	<artifactId>devoxxFr-admin</artifactId>
-	<version>1.0.0-SNAPSHOT</version>
-	<packaging>war</packaging>
+
+    <parent>
+        <groupId>fr.soat.devoxxfr.game</groupId>
+        <artifactId>devoxx-parent</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+    </parent>
+
+	<artifactId>devoxx-admin-client</artifactId>
+	<!--<packaging>war</packaging>-->
 	<description>Hosted webapp with Spring MVC for devoxxFr</description>
-
-	<developers>
-		<developer>
-			<email>aurelien.viale@soat.fr</email>
-			<id>aurelien</id>
-			<roles>
-				<role>developer</role>
-			</roles>
-		</developer>
-	</developers>
-
-	<repositories>
-		<repository>
-			<id>JBoss Repo</id>
-			<url>https://repository.jboss.org/nexus/content/groups/public</url>
-		</repository>
-		<repository>
-			<id>Java.net Repository for Maven</id>
-			<url>http://download.java.net/maven/2/</url>
-		</repository>
-		<repository>
-            <id>repository.springframework.maven.release</id>
-            <url>http://maven.springframework.org/release</url>
-        </repository>
-		<repository>
-			<id>soat-cloudbees-snasphots</id>
-			<url>https://repository-soat.forge.cloudbees.com/snapshot/</url>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-		</repository>
-		<repository>
-			<id>soat-cloudbees-releases</id>
-			<url>https://repository-soat.forge.cloudbees.com/release/</url>
-			<releases>
-				<enabled>true</enabled>
-			</releases>
-		</repository>
-	</repositories>
 
 
 	<properties>
-		<devoxxfr.version>1.0.1-SNAPSHOT</devoxxfr.version>
-
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<java.version>1.6</java.version>
-
-		<slf4j.version>1.6.4</slf4j.version>
-		<logback.version>1.0.0</logback.version>
-		<commons-lang.version>2.6</commons-lang.version>
-
 		<spring.version>3.1.0.RELEASE</spring.version>
 		<tiles.version>2.2.2</tiles.version>
 		<jstl.version>1.2</jstl.version>
 		<taglibs.verion>1.1.2</taglibs.verion>
-		<jersey.version>1.11</jersey.version>
-		<servlet-api.version>3.0-alpha-1</servlet-api.version>
+        <servlet-api.version>3.0-alpha-1</servlet-api.version>
+        <jersey.version>1.11</jersey.version>
 		<commons-configuration.version>1.7</commons-configuration.version>
 		<commons-codec.version>1.6</commons-codec.version>
 
-		<junit.version>4.10</junit.version>
-		<mockito.version>1.9.0-rc1</mockito.version>
-		<powermock.version>1.4.10</powermock.version>
 	</properties>
 
 	<dependencies>
 		<dependency>
 			<groupId>fr.soat.devoxxfr.game</groupId>
-			<artifactId>pojo</artifactId>
-			<version>${devoxxfr.version}</version>
+			<artifactId>devoxx-core-pojo</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>fr.soat.devoxxfr.game</groupId>
-			<artifactId>admin-pojo</artifactId>
-			<version>${devoxxfr.version}</version>
+			<artifactId>devoxx-core-admin-pojo</artifactId>
 		</dependency>
 
 
 		<dependency>
 			<groupId>ch.qos.logback</groupId>
 			<artifactId>logback-classic</artifactId>
-			<version>${logback.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
-			<version>${slf4j.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>jcl-over-slf4j</artifactId>
-			<version>${slf4j.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>commons-lang</groupId>
 			<artifactId>commons-lang</artifactId>
-			<version>${commons-lang.version}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.mockito</groupId>
-			<artifactId>mockito-all</artifactId>
-			<version>${mockito.version}</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.powermock</groupId>
-			<artifactId>powermock-module-junit4</artifactId>
-			<version>${powermock.version}</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>${junit.version}</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.powermock</groupId>
-			<artifactId>powermock-api-mockito</artifactId>
-			<version>${powermock.version}</version>
-			<scope>test</scope>
 		</dependency>
 
 		<dependency>
@@ -141,37 +64,30 @@
 			<groupId>javax.servlet</groupId>
 			<artifactId>jstl</artifactId>
 			<version>${jstl.version}</version>
+            <scope>provided</scope>
 		</dependency>
 
 		<!-- Jersey Client (Rest) -->
 		<dependency>
 			<groupId>com.sun.jersey</groupId>
 			<artifactId>jersey-client</artifactId>
-			<version>${jersey.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>javax.ws.rs</groupId>
+                    <artifactId>jsr311-api</artifactId>
+                </exclusion>
+            </exclusions>
 		</dependency>
 
 		<dependency>
 			<groupId>com.sun.jersey</groupId>
 			<artifactId>jersey-json</artifactId>
-			<version>${jersey.version}</version>
-			<exclusions>
-				<!--<exclusion> -->
-				<!--<groupId>org.codehaus.jackson</groupId> -->
-				<!--<artifactId>jackson-core-asl</artifactId> -->
-				<!--</exclusion> -->
-				<!--<exclusion> -->
-				<!--<groupId>org.codehaus.jackson</groupId> -->
-				<!--<artifactId>jackson-mapper-asl</artifactId> -->
-				<!--</exclusion> -->
-				<!--<exclusion> -->
-				<!--<groupId>org.codehaus.jackson</groupId> -->
-				<!--<artifactId>jackson-jaxrs</artifactId> -->
-				<!--</exclusion> -->
-				<!--<exclusion> -->
-				<!--<groupId>org.codehaus.jackson</groupId> -->
-				<!--<artifactId>jackson-xc</artifactId> -->
-				<!--</exclusion> -->
-			</exclusions>
+            <exclusions>
+                <exclusion>
+                    <groupId>javax.ws.rs</groupId>
+                    <artifactId>jsr311-api</artifactId>
+                </exclusion>
+            </exclusions>
 		</dependency>
 
 		<!-- Spring Dependencies -->
@@ -264,7 +180,6 @@
 		<dependency>
 			<groupId>commons-configuration</groupId>
 			<artifactId>commons-configuration</artifactId>
-			<version>${commons-configuration.version}</version>
 			<exclusions>
 				<exclusion>
 					<artifactId>commons-beanutils</artifactId>
@@ -277,115 +192,18 @@
 		<dependency>
 			<groupId>commons-codec</groupId>
 			<artifactId>commons-codec</artifactId>
-			<version>${commons-codec.version}</version>
 		</dependency>
 	</dependencies>
 
-	<profiles>
-
-		<profile>
-			<id>cloudbees-jee</id>
-			<properties>
-				<environment>cloudbees-jetoile</environment>
-			</properties>
-			<build>
-				<resources>
-					<resource>
-						<filtering>true</filtering>
-						<directory>src/main/resources</directory>
-					</resource>
-				</resources>
-				<filters>
-					<filter>src/main/filters/filter-${environment}.properties</filter>
-				</filters>
-			</build>
-		</profile>
-
-		<profile>
-			<id>cloudbees-soat</id>
-			<properties>
-				<environment>cloudbees-soat</environment>
-			</properties>
-			<build>
-				<resources>
-					<resource>
-						<filtering>true</filtering>
-						<directory>src/main/resources</directory>
-					</resource>
-				</resources>
-				<filters>
-					<filter>src/main/filters/filter-${environment}.properties</filter>
-				</filters>
-			</build>
-		</profile>
-
-		<profile>
-			<id>default</id>
-			<activation>
-				<activeByDefault>true</activeByDefault>
-			</activation>
-			<properties>
-				<environment>dev</environment>
-			</properties>
-			<build>
-				<resources>
-					<resource>
-						<filtering>true</filtering>
-						<directory>src/main/resources</directory>
-					</resource>
-				</resources>
-				<filters>
-					<filter>src/main/filters/filter-${environment}.properties</filter>
-				</filters>
-			</build>
-
-		</profile>
-	</profiles>
-
-	<build>
-		<plugins>
-			<plugin>
-				<artifactId>maven-deploy-plugin</artifactId>
-				<version>2.7</version>
-			</plugin>
-
-			<plugin>
-				<artifactId>maven-release-plugin</artifactId>
-				<version>2.1</version>
-			</plugin>
-
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>2.3.2</version>
-				<configuration>
-					<source>${java.version}</source>
-					<target>${java.version}</target>
-				</configuration>
-			</plugin>
-
-			<plugin>
-				<artifactId>maven-source-plugin</artifactId>
-				<version>2.1.2</version>
-				<executions>
-					<execution>
-						<phase>package</phase>
-						<goals>
-							<goal>jar</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-
-			<plugin>
-				<artifactId>maven-war-plugin</artifactId>
-				<version>2.1.1</version>
-				<configuration>
-					<failOnMissingWebXml>false</failOnMissingWebXml>
-				</configuration>
-			</plugin>
-
-
-		</plugins>
-	</build>
+    <!--<build>-->
+        <!--<plugins>-->
+			<!--<plugin>-->
+				<!--<artifactId>maven-war-plugin</artifactId>-->
+				<!--<version>2.1.1</version>-->
+				<!--<configuration>-->
+					<!--<failOnMissingWebXml>false</failOnMissingWebXml>-->
+				<!--</configuration>-->
+			<!--</plugin>-->
+		<!--</plugins>-->
+	<!--</build>-->
 </project>

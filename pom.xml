@@ -5,9 +5,9 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>fr.soat.devoxxfr.game</groupId>
-    <artifactId>game-parent</artifactId>
+    <artifactId>devoxx-parent</artifactId>
     <packaging>pom</packaging>
-    <version>1.0.1-SNAPSHOT</version>
+    <version>1.0.0-SNAPSHOT</version>
 
 
     <repositories>
@@ -33,16 +33,17 @@
             <url>http://mvnrepository.com/artifact/org.eclipse.jetty</url>
         </repository>
 
-</repositories>
+    </repositories>
 
     <modules>
         <module>devoxx-core</module>
         <module>devoxx-client</module>
-       <module>devoxx-admin-client</module>
+        <module>devoxx-admin-client</module>
+        <module>devoxx-webapp</module>
     </modules>
 
     <properties>
-        
+
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <projectBaseUri>${project.baseUri}</projectBaseUri>
         <java.version>1.6</java.version>
@@ -71,7 +72,13 @@
         <dozer.version>5.3.2</dozer.version>
         <mongo-java-driver.version>2.5.3</mongo-java-driver.version>
         <morphia.version>0.99</morphia.version>
-        <!--<servlet-api.version>3.0-alpha-1</servlet-api.version>-->
+        <commons-codec.version>1.6</commons-codec.version>
+
+        <spring.version>3.1.0.RELEASE</spring.version>
+        <tiles.version>2.2.2</tiles.version>
+        <jstl.version>1.2</jstl.version>
+        <taglibs.verion>1.1.2</taglibs.verion>
+        <servlet-api.version>3.0-alpha-1</servlet-api.version>
     </properties>
 
     <developers>
@@ -89,11 +96,53 @@
                 <role>developer</role>
             </roles>
         </developer>
+        <developer>
+            <email>francois.ostyn@soat.fr</email>
+            <id>francois</id>
+            <roles>
+                <role>architect</role>
+            </roles>
+        </developer>
     </developers>
 
     <dependencyManagement>
-
         <dependencies>
+
+            <dependency>
+                <groupId>fr.soat.devoxxfr.game</groupId>
+                <artifactId>devoxx-core-admin-pojo</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>fr.soat.devoxxfr.game</groupId>
+                <artifactId>devoxx-core-business</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>fr.soat.devoxxfr.game</groupId>
+                <artifactId>devoxx-core-business</artifactId>
+                <version>${project.version}</version>
+                <type>test-jar</type>
+            </dependency>
+            <dependency>
+                <groupId>fr.soat.devoxxfr.game</groupId>
+                <artifactId>devoxx-core-persistent</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>fr.soat.devoxxfr.game</groupId>
+                <artifactId>devoxx-core-pojo</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>fr.soat.devoxxfr.game</groupId>
+                <artifactId>devoxx-admin-client</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+
+
             <dependency>
                 <groupId>org.mongodb</groupId>
                 <artifactId>mongo-java-driver</artifactId>
@@ -183,7 +232,7 @@
             </dependency>
             <dependency>
                 <groupId>com.sun.jersey</groupId>
-                <artifactId>jersey-jrebel</artifactId>
+                <artifactId>jersey-client</artifactId>
                 <version>${jersey.version}</version>
             </dependency>
 
@@ -203,6 +252,22 @@
                 <version>${slf4j.version}</version>
                 <scope>runtime</scope>
             </dependency>
+
+
+            <dependency>
+                <groupId>javax.servlet</groupId>
+                <artifactId>servlet-api</artifactId>
+                <version>${servlet-api.version}</version>
+                <scope>provided</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>javax.servlet</groupId>
+                <artifactId>jstl</artifactId>
+                <version>${jstl.version}</version>
+                <scope>provided</scope>
+            </dependency>
+
             <dependency>
                 <groupId>commons-lang</groupId>
                 <artifactId>commons-lang</artifactId>
@@ -212,6 +277,11 @@
                 <groupId>commons-configuration</groupId>
                 <artifactId>commons-configuration</artifactId>
                 <version>${commons-configuration.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>commons-codec</groupId>
+                <artifactId>commons-codec</artifactId>
+                <version>${commons-codec.version}</version>
             </dependency>
 
             <dependency>
