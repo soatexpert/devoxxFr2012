@@ -37,7 +37,8 @@
 
     <modules>
         <module>devoxx-core</module>
-        <module>devoxx-admin-client</module>
+        <module>devoxx-client</module>
+       <module>devoxx-admin-client</module>
     </modules>
 
     <properties>
