@@ -135,13 +135,6 @@
                 <version>${project.version}</version>
             </dependency>
 
-            <dependency>
-                <groupId>fr.soat.devoxxfr.game</groupId>
-                <artifactId>devoxx-admin-client</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-
-
 
             <dependency>
                 <groupId>org.mongodb</groupId>
