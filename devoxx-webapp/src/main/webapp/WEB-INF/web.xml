@@ -70,6 +70,10 @@
         <!--<param-value>false</param-value>-->
     <!--</context-param>-->
 
+	<absolute-ordering>
+		<others />
+		<!-- <name>devoxx_admin_client</name> -->
+	</absolute-ordering>
 
     <welcome-file-list>
         <welcome-file>index.html</welcome-file>
