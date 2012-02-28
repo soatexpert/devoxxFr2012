@@ -70,8 +70,8 @@ public class AllUserResponseDto {
 			Iterator<UserResponseDto> iterator = userResponses.iterator();
 			while (iterator.hasNext()) {
 				UserResponseDto userResponse = iterator.next();
-				if (StringUtils.isEmpty(userResponse.getName())) {
-					// a user without name is considered invalid
+				if (StringUtils.isEmpty(userResponse.getUrlId())) {
+					// a user without urlId is considered invalid
 					iterator.remove();
 				}
 			}

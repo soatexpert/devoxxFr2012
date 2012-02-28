@@ -40,7 +40,7 @@ import java.util.ArrayList;
 @Entity("gameUserData")
 public class GameUserData {
     @Id
-    private String name;
+    private Long userId;
 
 //    private ObjectId id;
     private int score = 0;
@@ -78,13 +78,12 @@ public class GameUserData {
         this.games = games;
     }
 
-    public String getName() {
-
-        return name;
+    public Long getUserId() {
+        return userId;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
     public GameUserData() {
@@ -94,7 +93,7 @@ public class GameUserData {
     @Override
     public String toString() {
         return "GameUserData{" +
-                "name='" + name + '\'' +
+                "userId='" + userId + '\'' +
                 ", score=" + score +
                 ", games=" + games +
                 '}';
@@ -109,14 +108,14 @@ public class GameUserData {
 
         if (score != that.score) return false;
         if (games != null ? !games.equals(that.games) : that.games != null) return false;
-        if (name != null ? !name.equals(that.name) : that.name != null) return false;
+        if (userId != null ? !userId.equals(that.userId) : that.userId != null) return false;
 
         return true;
     }
 
     @Override
     public int hashCode() {
-        int result = name != null ? name.hashCode() : 0;
+        int result = userId != null ? userId.hashCode() : 0;
         result = 31 * result + score;
         result = 31 * result + (games != null ? games.hashCode() : 0);
         return result;

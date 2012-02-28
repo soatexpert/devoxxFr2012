@@ -49,18 +49,19 @@ public class UserService {
     @Path("/")
     @POST
     @Produces(MediaType.APPLICATION_JSON)
-    public UserResponseDto createUser(@FormParam("username") String name, @FormParam("mail") String mail) throws InvalidUserException {
+    public UserResponseDto createUser(@FormParam("urlId") String urlId, @FormParam("username") String name, @FormParam("mail") String mail) throws InvalidUserException {
         UserRequestDto userRequestDto = new UserRequestDto();
+        userRequestDto.setUrlId(urlId);
         userRequestDto.setName(name);
         userRequestDto.setMail(mail);
 
         return delegate.createUser(userRequestDto);
     }
 
-    @Path("/{username}")
+    @Path("/{userId}")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public UserResponseDto getUser(@PathParam("username") String userName) {
-        return delegate.getUser(userName);
+    public UserResponseDto getUser(@PathParam("userId") Long userId) {
+        return delegate.getUser(userId);
     }
 }

@@ -49,6 +49,8 @@ public class AdminQuestionServiceClient {
     public static final String BASE_URI = "http://localhost:8080/devoxx-webapp-1.0.0-SNAPSHOT/";
     public static final String SERVICE_PATH = "services";
     public static final String TEST_USERNAME = "toto";
+    public static final String TEST_URLID = "http://toto.myopenid.com/";
+    public static Long TEST_USER_ID_RETURN = 1L;
 
     public static void main(String[] args) {
         AdminQuestionServiceClient client = new AdminQuestionServiceClient();
@@ -76,12 +78,13 @@ public class AdminQuestionServiceClient {
         ClientConfig config = new DefaultClientConfig();
         Client client = Client.create(config);
         WebResource service = client.resource(getBaseURI());
-        service.path(SERVICE_PATH).path("/admin/question/"+TEST_USERNAME+"/create").type(MediaType.APPLICATION_JSON).put();
+        service.path(SERVICE_PATH).path("/admin/question/"+TEST_USER_ID_RETURN+"/create").type(MediaType.APPLICATION_JSON).put();
     }
 
 
     public UserResponseDto testCreateUser() {
         UserRequestDto requestDto = new UserRequestDto();
+        requestDto.setUrlId(TEST_URLID);
         requestDto.setName(TEST_USERNAME);
         requestDto.setMail(TEST_USERNAME+"@gmail.com");
 
@@ -89,6 +92,7 @@ public class AdminQuestionServiceClient {
         Client client = Client.create(config);
         WebResource service = client.resource(getBaseURI());
         UserResponseDto res = service.path(SERVICE_PATH).path("/admin/user").type(MediaType.APPLICATION_JSON).post(UserResponseDto.class, requestDto);
+        TEST_USER_ID_RETURN = res.getId();
         return  res;
     }
 
@@ -101,7 +105,7 @@ public class AdminQuestionServiceClient {
         Client client = Client.create(config);
         WebResource service = client.resource(getBaseURI());
 //        AllQuestionResponseDto res = service.path("services").path("/admin/question/allQuestions/toto").type(MediaType.APPLICATION_JSON).get(AllQuestionResponseDto.class);
-        AllQuestionResponseDto res = service.path(SERVICE_PATH).path("/admin/question/"+TEST_USERNAME).type(MediaType.APPLICATION_JSON).get(AllQuestionResponseDto.class);
+        AllQuestionResponseDto res = service.path(SERVICE_PATH).path("/admin/question/"+TEST_USER_ID_RETURN).type(MediaType.APPLICATION_JSON).get(AllQuestionResponseDto.class);
 
         return res;
     }
@@ -115,7 +119,7 @@ public class AdminQuestionServiceClient {
         ClientConfig config = new DefaultClientConfig();
         Client client = Client.create(config);
         WebResource service = client.resource(getBaseURI());
-        service.path(SERVICE_PATH).path("/admin/user/"+TEST_USERNAME).delete();
+        service.path(SERVICE_PATH).path("/admin/user/"+TEST_USER_ID_RETURN).delete();
     }
 
 }

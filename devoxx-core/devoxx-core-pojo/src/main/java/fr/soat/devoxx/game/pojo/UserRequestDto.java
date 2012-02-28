@@ -33,48 +33,49 @@ import java.io.Serializable;
  */
 @XmlRootElement(name = "userRequest")
 public class UserRequestDto implements Serializable {
-//    private String token;
 
-    private String name;
+	private String urlId;
 
-    private String mail;
+	private String name;
 
-//    public String getToken() {
-//        return token;
-//    }
-//
-//    public void setToken(String token) {
-//        this.token = token;
-//    }
+	private String mail;
 
-    public String getMail() {
-        return this.mail;
-    }
+	public String getUrlId() {
+		return urlId;
+	}
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	public void setUrlId(String urlId) {
+		this.urlId = urlId;
+	}
 
-    public void setMail(String mail) {
-        this.mail = mail;
-    }
+	public String getMail() {
+		return this.mail;
+	}
 
-    public String getName() {
-        return this.name;
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-    public UserRequestDto() {
-    }
+	public void setMail(String mail) {
+		this.mail = mail;
+	}
 
-    public UserRequestDto(String name, String mail) {
-        this.mail = mail;
-        this.name = name;
-    }
+	public String getName() {
+		return this.name;
+	}
+
+	public UserRequestDto() {
+	}
+
+	public UserRequestDto(String name, String mail) {
+		this.mail = mail;
+		this.name = name;
+	}
 
     @Override
     public String toString() {
         return "UserRequestDto{" +
-//                "token='" + token + '\'' +
+                "urlId='" + urlId + '\'' +
                 ", name='" + name + '\'' +
                 ", mail='" + mail + '\'' +
                 '}';

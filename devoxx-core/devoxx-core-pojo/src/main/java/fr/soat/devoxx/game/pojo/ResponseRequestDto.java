@@ -38,7 +38,7 @@ public class ResponseRequestDto implements Serializable {
 
     private int id;
 
-    private String userName;
+    private Long userId;
     
     private List<String> responses = new ArrayList<String>();
 
@@ -53,12 +53,12 @@ public class ResponseRequestDto implements Serializable {
         this.id = id;
     }
 
-    public String getUserName() {
-        return userName;
+    public Long getUserId() {
+        return userId;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
     public List<String> getResponses() {
@@ -73,7 +73,7 @@ public class ResponseRequestDto implements Serializable {
     public String toString() {
         return "ResponseRequest{" +
                 "id=" + id +
-                ", username=" + userName +
+                ", userId=" + userId +
                 ", responses=" + responses +
                 '}';
     }
