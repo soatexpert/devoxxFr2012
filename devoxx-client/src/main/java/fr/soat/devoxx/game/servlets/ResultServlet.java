@@ -28,10 +28,10 @@ public class ResultServlet extends HttpServlet {
 
         String forward = "";
 
-        String userName = request.getParameter("userName");
+        Long userId = Long.parseLong( request.getParameter("userId") );
 
-        if (userName != null) {
-            ResultResponseDto result = resultService.getResultForUser(userName);
+        if (userId != null) {
+            ResultResponseDto result = resultService.getResultForUser(userId);
 
             if (result != null) {
                 request.setAttribute("nbFail", result.getNbFail());

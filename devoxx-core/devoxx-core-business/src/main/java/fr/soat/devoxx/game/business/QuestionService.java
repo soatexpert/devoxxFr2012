@@ -59,12 +59,12 @@ public class QuestionService {
     @Path("/reply")
     @POST
     @Produces(MediaType.APPLICATION_JSON)
-    public ResponseResponseDto giveResponse(@FormParam("userName") String userName,
+    public ResponseResponseDto giveResponse(@FormParam("userId") Long userId,
                                             @FormParam("id") Integer questionId,
                                             @FormParam("responses") List responses) {
         //JERSEY-569 - http://java.net/jira/browse/JERSEY-569
         ResponseRequestDto responseDto = new ResponseRequestDto();
-        responseDto.setUserName(userName);
+        responseDto.setUserId(userId);
         responseDto.setId(questionId);
         responseDto.setResponses(responses);
 
@@ -72,11 +72,11 @@ public class QuestionService {
         return result;
     }
 
-    @Path("/{username}")
+    @Path("/{userId}")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public AllQuestionResponseDto getAllQuestions(@PathParam("username") String username) {
-        AllQuestionResponseDto result = delegate.getAllQuestions(username);
+    public AllQuestionResponseDto getAllQuestions(@PathParam("userId") Long userId) {
+        AllQuestionResponseDto result = delegate.getAllQuestions(userId);
         return result;
     }
 

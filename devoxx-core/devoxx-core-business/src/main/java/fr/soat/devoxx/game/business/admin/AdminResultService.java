@@ -53,11 +53,11 @@ public class AdminResultService {
 
     private final Mapper dozerMapper = new DozerBeanMapper();
 
-    @Path("/{username}")
+    @Path("/{userId}")
     @GET
     @Produces({MediaType.APPLICATION_JSON})
-    public ResultResponseDto getResultForUser(@PathParam("username") String userName) {
-    	GameResult gameResult = gameUserDataManager.getResult(userName);
+    public ResultResponseDto getResultForUser(@PathParam("userId") Long userId) {
+    	GameResult gameResult = gameUserDataManager.getResult(userId);
         return dozerMapper.map(gameResult, ResultResponseDto.class);
     }
     
