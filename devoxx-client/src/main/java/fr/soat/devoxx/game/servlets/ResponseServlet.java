@@ -34,16 +34,16 @@ public class ResponseServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        String userName = request.getParameter("userName");
+        Long userId = Long.parseLong( request.getParameter("userId") );
 
         String idQuestion = request.getParameter("questionId");
 
         String[] responsesFromUser = (String[]) request.getParameterMap().get("answers");
 
-        if (userName != null && responsesFromUser != null) {
+        if (userId != null && responsesFromUser != null) {
             List<String> responses = new ArrayList(Arrays.asList(responsesFromUser));
 
-            ResponseResponseDto res = questionService.giveResponse(userName, Integer.valueOf(idQuestion), responses);
+            ResponseResponseDto res = questionService.giveResponse(userId, Integer.valueOf(idQuestion), responses);
 
             if (res != null) {
                 ServletUtils.writeResponse(response, res);
