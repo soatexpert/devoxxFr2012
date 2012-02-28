@@ -49,6 +49,9 @@ import javax.validation.ValidatorFactory;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response.Status;
+
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.List;
 import java.util.Set;
 
@@ -87,12 +90,14 @@ public class AdminUserService {
     }
 
     public AdminUserService() {
+    	init();
     }
 
     AdminUserService(String persistenceUnitName,
                      GameUserDataManager gameUserDataManager) {
         this.PERSISTENCE_UNIT_NAME = persistenceUnitName;
         this.gameUserDataManager = gameUserDataManager;
+        init();
     }
 
     private void close() {
@@ -107,15 +112,15 @@ public class AdminUserService {
     public AllUserResponseDto getAllUsers() {
         AllUserResponseDto allUsersDto = new AllUserResponseDto();
         try {
-            init();
             @SuppressWarnings("unchecked")
             List<User> users = em.createQuery("from User u").getResultList();
             for (User user : users) {
                 allUsersDto.addUserResponse(this.dozerMapper.map(user, UserResponseDto.class));
             }
-        } finally {
-            close();
-        }
+        } catch (RuntimeException e) {
+        	LOGGER.debug("Get all users failed", e);
+			throw new WebApplicationException(Status.BAD_REQUEST);
+		}
         return allUsersDto;
     }
 
@@ -125,7 +130,6 @@ public class AdminUserService {
     public UserResponseDto createUser(UserRequestDto userRequestDto)
             throws InvalidUserException {
         try {
-            init();
             User user = dozerMapper.map(userRequestDto, User.class);
 
             Set<ConstraintViolation<User>> constraintViolations = validator
@@ -145,70 +149,90 @@ public class AdminUserService {
             em.getTransaction().commit();
             LOGGER.debug("User creation successful: {}", userRequestDto);
 
-            this.gameUserDataManager.registerUser(userRequestDto.getName());
+            this.gameUserDataManager.registerUser(user.getId());
 
             return dozerMapper.map(user, UserResponseDto.class);
-        } finally {
-            close();
-        }
+        } catch (RuntimeException e) {
+        	LOGGER.debug("Post new user failed", e);
+			throw new WebApplicationException(Status.BAD_REQUEST);
+		}
     }
 
-    @Path("/{username}")
+    @Path("/{userId}")
     @GET
     @Produces({MediaType.APPLICATION_JSON})
-    public UserResponseDto getUser(@PathParam("username") String userName) {
+    public UserResponseDto getUser(@PathParam("userId") Long userId) {
         try {
-            init();
-//			List<User> users = getUsers(em, userName);
-            User user = getUserByName(userName);
+            User user = getUserById(userId);
 
             if (null != user) {
-                LOGGER.debug("get user {} successful", userName);
+                LOGGER.debug("get user {} successful", userId);
                 UserResponseDto response = dozerMapper.map(user, UserResponseDto.class);
                 response.setToken(null);
                 return response;
             } else {
-                LOGGER.debug("get user {} failed: not found", userName);
+                LOGGER.debug("get user {} failed: not found", userId);
                 throw new WebApplicationException(Status.NOT_FOUND);
             }
         } catch (PersistenceException e) {
             LOGGER.debug("get user failed: PersistenceException", e);
             throw new WebApplicationException(Status.NOT_FOUND);
-        } finally {
-            close();
         }
     }
+    
+    @Path("/openId/{urlId}")
+    @GET
+    @Produces({MediaType.APPLICATION_JSON})
+    public UserResponseDto getUserByOpenId(@PathParam("urlId") String urlId) {
+        try {
+        	urlId = URLDecoder.decode(urlId, "UTF-8");
+            User user = getUserByUrlId(urlId);
 
-    @Path("/{username}/games")
-    @DELETE
-    public void cleanUserGames(@PathParam("username") String userName) {
-        this.gameUserDataManager.cleanUser(userName);
+            if (null != user) {
+                LOGGER.debug("get user {} successful", urlId);
+                UserResponseDto response = dozerMapper.map(user, UserResponseDto.class);
+                response.setToken(null);
+                return response;
+            } else {
+                LOGGER.debug("get user {} failed: not found", urlId);
+                throw new WebApplicationException(Status.NOT_FOUND);
+            }
+        } catch (UnsupportedEncodingException e) {
+        	LOGGER.error("UrlDecoding '/openId/"+urlId+"' error", e);
+        	throw new WebApplicationException(Status.BAD_REQUEST);
+        } catch (PersistenceException e) {
+            LOGGER.debug("get user failed: PersistenceException", e);
+            throw new WebApplicationException(Status.NOT_FOUND);
+        } 
     }
 
-    @Path("/{username}")
+    @Path("/{userId}/games")
     @DELETE
-    public void deleteUser(@PathParam("username") String userName) {
+    public void cleanUserGames(@PathParam("userId") Long userId) {
+        this.gameUserDataManager.cleanUser(userId);
+    }
+
+    @Path("/{userId}")
+    @DELETE
+    public void deleteUser(@PathParam("userId") Long userId) {
         try {
-            init();
 //			List<User> users = getUsers(em, userName);
-            User user = getUserByName(userName);
+            User user = getUserById(userId);
 
             if (null != user) {
                 em.getTransaction().begin();
                 em.remove(user);
                 em.getTransaction().commit();
             } else {
-                LOGGER.debug("delete user {} failed: not found", userName);
+                LOGGER.debug("delete user {} failed: not found", userId);
                 throw new WebApplicationException(Status.NOT_FOUND);
             }
-            this.gameUserDataManager.destroyUser(userName);
+            this.gameUserDataManager.destroyUser(userId);
 
-            LOGGER.debug("delete user {} successful", userName);
+            LOGGER.debug("delete user {} successful", userId);
         } catch (PersistenceException e) {
             LOGGER.debug("delete user failed: PersistenceException", e);
 //			throw new WebApplicationException(Status.NOT_FOUND);
-        } finally {
-            close();
         }
     }
 
@@ -221,29 +245,41 @@ public class AdminUserService {
                  .setParameter("name", userName).getResultList();
      }*/
 
-    private User getUserByName(String userName) throws PersistenceException {
-        return (User) em.createQuery("select g from User g where g.name = :name")
-                .setParameter("name", userName).getSingleResult();
+    private User getUserById(Long userId) throws PersistenceException {
+        return (User) em.createQuery("select u from User u where u.id = :id")
+                .setParameter("id", userId).getSingleResult();
 //        CriteriaQuery<User> criteriaQuery = createSimpleUserCriteriaQuery(em,
 //                userName);
 //                return em.createQuery(criteriaQuery).setParameter("name",
 //                userName).getSingleResult();
     }
-
-    private CriteriaQuery<User> createSimpleUserCriteriaQuery(EntityManager em,
-                                                              String userName) {
-        // List<User> users = em.createQuery(
-        // "select g from User g where g.name = :name")
-        // .setParameter("name", userName).getResultList();
-
-        CriteriaBuilder queryBuilder = em.getCriteriaBuilder();
-        CriteriaQuery<User> criteriaQuery = queryBuilder
-                .createQuery(User.class);
-
-        Root<User> root = criteriaQuery.from(User.class);
-
-        criteriaQuery.select(root).where(
-                queryBuilder.equal(root.get("name"), userName));
-        return criteriaQuery;
+    
+    private User getUserByUrlId(String urlId) throws PersistenceException {
+        return (User) em.createQuery("select u from User u where u.urlId = :urlId")
+                .setParameter("urlId", urlId).getSingleResult();
     }
+
+	@Override
+    protected void finalize() throws Throwable {
+	    close();
+	    super.finalize();
+    }
+
+//    private CriteriaQuery<User> createSimpleUserCriteriaQuery(EntityManager em,
+//                                                              String userName) {
+//        // List<User> users = em.createQuery(
+//        // "select g from User g where g.name = :name")
+//        // .setParameter("name", userName).getResultList();
+//
+//        CriteriaBuilder queryBuilder = em.getCriteriaBuilder();
+//        CriteriaQuery<User> criteriaQuery = queryBuilder
+//                .createQuery(User.class);
+//
+//        Root<User> root = criteriaQuery.from(User.class);
+//
+//        criteriaQuery.select(root).where(
+//                queryBuilder.equal(root.get("name"), userName));
+//        return criteriaQuery;
+//    }
+    
 }

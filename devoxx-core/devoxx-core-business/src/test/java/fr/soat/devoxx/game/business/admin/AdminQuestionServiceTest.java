@@ -48,6 +48,7 @@ import java.util.Collections;
 
 import static org.junit.Assert.*;
 import static org.mockito.Matchers.anyInt;
+import static org.mockito.Matchers.anyLong;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
 
@@ -102,7 +103,7 @@ public class AdminQuestionServiceTest {
         game.setId(1);
         game.setType(ResponseType.NEED_RESPONSE);
 
-        when(gameUserDataManager.getGameById(anyString(), anyInt())).thenReturn(game);
+        when(gameUserDataManager.getGameById(anyLong(), anyInt())).thenReturn(game);
 
         ResponseRequestDto responseDto = new ResponseRequestDto();
         responseDto.setId(1);
@@ -120,7 +121,7 @@ public class AdminQuestionServiceTest {
         game.setId(1);
         game.setType(ResponseType.NEED_RESPONSE);
 
-        when(gameUserDataManager.getGameById(anyString(), anyInt())).thenReturn(game);
+        when(gameUserDataManager.getGameById(anyLong(), anyInt())).thenReturn(game);
 
         ResponseRequestDto responseDto = new ResponseRequestDto();
         responseDto.setId(1);
@@ -164,7 +165,7 @@ public class AdminQuestionServiceTest {
         game.setId(2);
         game.setType(ResponseType.NEED_RESPONSE);
 
-        when(gameUserDataManager.getGameById(anyString(), anyInt())).thenReturn(game);
+        when(gameUserDataManager.getGameById(anyLong(), anyInt())).thenReturn(game);
 
         ResponseRequestDto responseDto = new ResponseRequestDto();
         responseDto.setId(2);
@@ -182,7 +183,7 @@ public class AdminQuestionServiceTest {
         game.setId(2);
         game.setType(ResponseType.NEED_RESPONSE);
 
-        when(gameUserDataManager.getGameById(anyString(), anyInt())).thenReturn(game);
+        when(gameUserDataManager.getGameById(anyLong(), anyInt())).thenReturn(game);
 
         ResponseRequestDto responseDto = new ResponseRequestDto();
         responseDto.setId(2);
@@ -215,7 +216,7 @@ public class AdminQuestionServiceTest {
         game.setId(3);
         game.setType(ResponseType.NEED_RESPONSE);
 
-        when(gameUserDataManager.getGameById(anyString(), anyInt())).thenReturn(game);
+        when(gameUserDataManager.getGameById(anyLong(), anyInt())).thenReturn(game);
 
         ResponseRequestDto responseDto = new ResponseRequestDto();
         responseDto.setId(3);
@@ -234,7 +235,7 @@ public class AdminQuestionServiceTest {
         game.setId(3);
         game.setType(ResponseType.NEED_RESPONSE);
 
-        when(gameUserDataManager.getGameById(anyString(), anyInt())).thenReturn(game);
+        when(gameUserDataManager.getGameById(anyLong(), anyInt())).thenReturn(game);
 
         ResponseRequestDto responseDto = new ResponseRequestDto();
         responseDto.setId(3);
@@ -275,12 +276,12 @@ public class AdminQuestionServiceTest {
         //given
         Game game1 = new Game();
         game1.setType(ResponseType.NEED_RESPONSE);
-        game1.setGivenAnswers(Collections.EMPTY_LIST);
+        game1.setGivenAnswers(Collections.<String>emptyList());
         game1.setId(1);
 
         Game game2 = new Game();
         game2.setType(ResponseType.FAIL);
-        game2.setGivenAnswers(Collections.EMPTY_LIST);
+        game2.setGivenAnswers(Collections.<String>emptyList());
         game2.setId(2);
 
         Game game3 = new Game();
@@ -288,10 +289,10 @@ public class AdminQuestionServiceTest {
         game3.setGivenAnswers(Lists.newArrayList("titi", "tutu"));
         game3.setId(3);
 
-        when(gameUserDataManager.getGamesByResultType("toto", ResponseType.NEED_RESPONSE)).thenReturn(Lists.newArrayList(game1));
+        when(gameUserDataManager.getGamesByResultType(1L, ResponseType.NEED_RESPONSE)).thenReturn(Lists.newArrayList(game1));
 
-        //wwhen
-        AllQuestionResponseDto results = adminQuestionService.getAllQuestions("toto");
+        //when
+        AllQuestionResponseDto results = adminQuestionService.getAllQuestions(1L);
 
         //then
         assertNotNull(results);
@@ -299,6 +300,4 @@ public class AdminQuestionServiceTest {
         assertEquals(results.getQuestions().get(0).getId(), 1);
 
     }
-
-
 }

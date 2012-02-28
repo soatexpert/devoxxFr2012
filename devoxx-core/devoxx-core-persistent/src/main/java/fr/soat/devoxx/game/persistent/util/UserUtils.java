@@ -1,6 +1,7 @@
 package fr.soat.devoxx.game.persistent.util;
 
 import java.util.NoSuchElementException;
+import java.util.UUID;
 
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.PropertiesConfiguration;
@@ -57,5 +58,9 @@ public enum UserUtils {
     
     public String generateToken() {
         return RandomStringUtils.randomAlphanumeric(getUserTokenLenght()).toLowerCase();
+    }
+    
+    public String generateRandomUsername() {
+        return "User-" + UUID.randomUUID().toString();
     }
 }

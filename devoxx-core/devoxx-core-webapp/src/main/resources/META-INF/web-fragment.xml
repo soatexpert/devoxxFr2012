@@ -1,23 +1,26 @@
-<web-fragment>
+<?xml version="1.0" encoding="UTF-8"?>
+<web-fragment xmlns="http://java.sun.com/xml/ns/javaee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-fragment_3_0.xsd"
+	version="3.0">
 
+	<servlet-mapping>
+		<servlet-name>javax.ws.rs.core.Application</servlet-name>
+		<url-pattern>/services/*</url-pattern>
+	</servlet-mapping>
 
-    <servlet-mapping>
-        <servlet-name>javax.ws.rs.core.Application</servlet-name>
-        <url-pattern>/services/*</url-pattern>
-    </servlet-mapping>
+	<filter>
+		<filter-name>Html5CorsFilter</filter-name>
+		<filter-class>fr.soat.devoxx.game.filter.Html5CorsFilter</filter-class>
+	</filter>
 
-    <filter>
-        <filter-name>Html5CorsFilter</filter-name>
-        <filter-class>fr.soat.devoxx.game.filter.Html5CorsFilter</filter-class>
-    </filter>
+	<filter-mapping>
+		<filter-name>Html5CorsFilter</filter-name>
+		<url-pattern>/services/*</url-pattern>
+	</filter-mapping>
 
-    <filter-mapping>
-        <filter-name>Html5CorsFilter</filter-name>
-        <url-pattern>/services/*</url-pattern>
-    </filter-mapping>
-
-    <listener>
-        <listener-class>fr.soat.devoxx.game.WebsocketServletContextListener</listener-class>
-    </listener>
+	<listener>
+		<listener-class>fr.soat.devoxx.game.WebsocketServletContextListener</listener-class>
+	</listener>
 
 </web-fragment>

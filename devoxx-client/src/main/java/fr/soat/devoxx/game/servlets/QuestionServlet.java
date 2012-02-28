@@ -32,10 +32,10 @@ public class QuestionServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        String userName = request.getParameter("userName");
+        Long userId = Long.parseLong( request.getParameter("userId") );
 
-        if (userName != null) {
-            AllQuestionResponseDto allQuestions = questionService.getAllQuestions(userName);
+        if (userId != null) {
+            AllQuestionResponseDto allQuestions = questionService.getAllQuestions(userId);
 
             //TODO : utiliser un patron de méthode !!!!!!!!!!
             if (allQuestions != null) {

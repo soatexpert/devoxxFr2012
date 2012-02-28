@@ -44,11 +44,11 @@ public class ResultService {
     @Inject
     private AdminResultService delegate;
 
-    @Path("/{username}")
+    @Path("/{userId}")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public ResultResponseDto getResultForUser(@PathParam("username") String userName) {
-        ResultResponseDto result = delegate.getResultForUser(userName);
+    public ResultResponseDto getResultForUser(@PathParam("userId") Long userId) {
+        ResultResponseDto result = delegate.getResultForUser(userId);
         return result;
     }
 }

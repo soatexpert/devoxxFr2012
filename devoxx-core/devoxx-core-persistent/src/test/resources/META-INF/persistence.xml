@@ -18,10 +18,10 @@
             <!--<property name="eclipselink.ddl-generation.output-mode" value="database" />-->
 
 
-            <property name="eclipselink.jdbc.driver" value="org.hsqldb.jdbcDriver"/>
-            <property name="eclipselink.jdbc.url" value="jdbc:hsqldb:mem:test"/>
-            <property name="eclipselink.jdbc.user" value="sa"/>
-            <property name="eclipselink.jdbc.password" value=""/>
+            <property name="javax.persistence.jdbc.driver" value="org.hsqldb.jdbcDriver"/>
+            <property name="javax.persistence.jdbc.url" value="jdbc:hsqldb:mem:test"/>
+            <property name="javax.persistence.jdbc.user" value="sa"/>
+            <property name="javax.persistence.jdbc.password" value=""/>
             <property name="eclipselink.target-database"
                       value="org.eclipse.persistence.platform.database.HSQLPlatform"/>
             <property name="eclipselink.logging.level" value="OFF"/>
