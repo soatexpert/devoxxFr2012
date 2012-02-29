@@ -32,13 +32,15 @@ import javax.ws.rs.core.MediaType;
 
 import fr.soat.devoxx.game.business.admin.AdminResultService;
 import fr.soat.devoxx.game.pojo.ResultResponseDto;
+import org.springframework.stereotype.Component;
 
 /**
  * User: khanh
  * Date: 27/12/11
  * Time: 21:31
  */
-@Path("/result")
+@Component
+@Path("/services/result")
 public class ResultService {
 
     @Inject

@@ -29,6 +29,7 @@ import fr.soat.devoxx.game.pojo.UserRequestDto;
 import fr.soat.devoxx.game.pojo.UserResponseDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
 import javax.inject.Inject;
 import javax.ws.rs.*;
@@ -39,7 +40,8 @@ import javax.ws.rs.core.MediaType;
  * Date: 20/12/11
  * Time: 14:12
  */
-@Path("/user")
+@Component
+@Path("/services/user")
 public class UserService {
     private final static Logger LOGGER = LoggerFactory.getLogger(UserService.class);
 

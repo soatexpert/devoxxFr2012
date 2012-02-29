@@ -49,7 +49,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @Singleton
-@Path("/admin/result")
+@Path("/services/admin/result")
 public class AdminResultService {
 
     @Inject

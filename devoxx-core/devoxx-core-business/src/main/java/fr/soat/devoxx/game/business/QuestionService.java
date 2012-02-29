@@ -30,6 +30,7 @@ import fr.soat.devoxx.game.pojo.ResponseRequestDto;
 import fr.soat.devoxx.game.pojo.ResponseResponseDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
 import javax.inject.Inject;
 import javax.ws.rs.*;
@@ -41,7 +42,8 @@ import java.util.List;
  * Date: 21/12/11
  * Time: 15:55
  */
-@Path("/question")
+@Component
+@Path("/services/question")
 public class QuestionService {
     private static final Logger LOGGER = LoggerFactory.getLogger(QuestionService.class);
 

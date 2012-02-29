@@ -64,7 +64,7 @@ import java.util.Set;
  */
 @Component
 @Singleton
-@Path("/admin/user")
+@Path("/services/admin/user")
 public class AdminUserService {
     private final static Logger LOGGER = LoggerFactory.getLogger(AdminUserService.class);
 

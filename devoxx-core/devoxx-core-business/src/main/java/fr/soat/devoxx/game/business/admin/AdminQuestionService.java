@@ -61,7 +61,7 @@ import java.util.Set;
  * Time: 15:55
  */
 @Component
-@Path("/admin/question")
+@Path("/services/admin/question")
 public class AdminQuestionService {
     private static final Logger LOGGER = LoggerFactory.getLogger(AdminQuestionService.class);
 
