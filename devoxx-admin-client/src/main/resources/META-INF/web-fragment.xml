@@ -4,7 +4,7 @@
     xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-fragment_3_0.xsd"
     version="3.0">
     
-    <name>devoxx_admin_client</name>
+    <name>devoxx-admin-client</name>
     <display-name>DevoxxFr MVC Admin Webapp</display-name>
 
     <context-param>

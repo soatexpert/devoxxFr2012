@@ -1,8 +1,6 @@
 package fr.soat.devoxx.game;
 
 import com.google.gson.Gson;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.map.SerializationConfig;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.core.MediaType;

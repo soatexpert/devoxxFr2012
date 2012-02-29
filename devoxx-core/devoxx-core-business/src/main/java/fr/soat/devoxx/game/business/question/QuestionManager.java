@@ -31,6 +31,7 @@ import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.PropertiesConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -41,6 +42,7 @@ import java.util.*;
  * Date: 21/12/11
  * Time: 08:41
  */
+@Component
 @Singleton
 public class QuestionManager {
 

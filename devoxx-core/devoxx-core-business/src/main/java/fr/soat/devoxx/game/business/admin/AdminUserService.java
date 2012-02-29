@@ -33,8 +33,10 @@ import org.dozer.DozerBeanMapper;
 import org.dozer.Mapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
@@ -60,6 +62,8 @@ import java.util.Set;
  * Date: 20/12/11
  * Time: 14:12
  */
+@Component
+@Singleton
 @Path("/admin/user")
 public class AdminUserService {
     private final static Logger LOGGER = LoggerFactory.getLogger(AdminUserService.class);

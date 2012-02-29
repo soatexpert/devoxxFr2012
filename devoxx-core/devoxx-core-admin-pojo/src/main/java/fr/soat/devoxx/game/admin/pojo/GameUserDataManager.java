@@ -33,6 +33,7 @@ import org.apache.commons.configuration.PropertiesConfiguration;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
 import javax.inject.Singleton;
 import java.net.UnknownHostException;
@@ -46,6 +47,7 @@ import java.util.List;
  */
 
 @Singleton
+@Component
 public class GameUserDataManager {
 
 

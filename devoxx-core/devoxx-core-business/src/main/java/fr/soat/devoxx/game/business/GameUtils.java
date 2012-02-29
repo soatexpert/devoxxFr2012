@@ -28,6 +28,7 @@ import org.apache.commons.configuration.PropertiesConfiguration;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
 import javax.inject.Singleton;
 import java.util.NoSuchElementException;
@@ -39,6 +40,7 @@ import java.util.NoSuchElementException;
  */
 //@Path("/gridService")
 @Singleton
+@Component
 public class GameUtils {
 //public enum GameUtils {
 //    INSTANCE;

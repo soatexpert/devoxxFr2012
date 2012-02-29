@@ -25,6 +25,8 @@ package fr.soat.devoxx.game.webmvc.services;
 
 import java.util.List;
 
+import fr.soat.devoxx.game.business.admin.AdminUserService;
+import fr.soat.devoxx.game.business.exception.InvalidUserException;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,8 +41,9 @@ import org.springframework.security.openid.OpenIDAuthenticationToken;
 
 import fr.soat.devoxx.game.pojo.UserRequestDto;
 import fr.soat.devoxx.game.pojo.UserResponseDto;
-import fr.soat.devoxx.game.webmvc.delegate.HttpRestException;
-import fr.soat.devoxx.game.webmvc.delegate.RequesterDelegate;
+
+import javax.inject.Inject;
+import javax.ws.rs.WebApplicationException;
 
 /**
  * @author aurelien
@@ -48,17 +51,21 @@ import fr.soat.devoxx.game.webmvc.delegate.RequesterDelegate;
  */
 public class OpenIdUserDetailsService implements UserDetailsService, AuthenticationUserDetailsService<OpenIDAuthenticationToken> {
 
-	private static Logger logger = LoggerFactory.getLogger(OpenIdUserDetailsService.class);
+
+    @Inject
+    AdminUserService adminUserService;
+    
+	private static Logger LOGGER = LoggerFactory.getLogger(OpenIdUserDetailsService.class);
 	private static final List<GrantedAuthority> DEFAULT_AUTHORITIES = AuthorityUtils.createAuthorityList("ROLE_USER");
 
 	@Override
 	public UserDetails loadUserByUsername(String urlId) throws UsernameNotFoundException {
-		try {
+//		try {
 	        return getUserWS(urlId);
-        } catch (HttpRestException e) {
-	        logger.debug("UserId : " + urlId + " doesn't exist", e);
-	        throw new UsernameNotFoundException("UserId : " + urlId + " doesn't exist in database", e);
-        }
+//        } catch (HttpRestException e) {
+//            LOGGER.debug("UserId : " + urlId + " doesn't exist", e);
+//	        throw new UsernameNotFoundException("UserId : " + urlId + " doesn't exist in database", e);
+//        }
 	}
 
 	/**
@@ -70,12 +77,12 @@ public class OpenIdUserDetailsService implements UserDetailsService, Authenticat
 	public UserDetails loadUserDetails(OpenIDAuthenticationToken token) throws UsernameNotFoundException {
 		
 		String urlId = token.getIdentityUrl();
-		logger.info("urlId="+urlId);
+        LOGGER.info("urlId=" + urlId);
 		
 		try {
 	        return getUserWS(urlId);
-        } catch (HttpRestException e) {
-	        logger.debug("UserId : " + urlId + " doesn't exist in database", e);
+        } catch (WebApplicationException e) {
+            LOGGER.debug("UserId : " + urlId + " doesn't exist in database", e);
         }
 
 		String email = null;
@@ -84,7 +91,7 @@ public class OpenIdUserDetailsService implements UserDetailsService, Authenticat
 		String fullName = null;
 
 		List<OpenIDAttribute> attributes = token.getAttributes();
-		logger.info("attributes=" + attributes);
+        LOGGER.info("attributes=" + attributes);
 
 		for (OpenIDAttribute attribute : attributes) {
 			if (attribute.getName().equals("email")) {
@@ -106,19 +113,21 @@ public class OpenIdUserDetailsService implements UserDetailsService, Authenticat
         user.setEmail(email);
         user.setName(fullName);
         
-        try {
+//        try {
 	        registerUserWS(user);
-        } catch (HttpRestException e) {
-        	logger.error("UserId : " + urlId + " persist error", e);
-        }
+//        } catch (HttpRestException e) {
+//            LOGGER.error("UserId : " + urlId + " persist error", e);
+//        }
 
 		return user;
 	}
 	
-	private OpenIdUserDetails getUserWS(String urlId) throws HttpRestException {
+	private OpenIdUserDetails getUserWS(String urlId) {
+
+        UserResponseDto userResp = adminUserService.getUser(Long.valueOf(urlId));
         
-		RequesterDelegate ws = new RequesterDelegate("/admin/user/" + urlId);
-        UserResponseDto userResp = ws.get(UserResponseDto.class);
+//		RequesterDelegate ws = new RequesterDelegate("/admin/user/" + urlId);
+//        UserResponseDto userResp = ws.get(UserResponseDto.class);
         
         //TODO User Get Role !
         OpenIdUserDetails user = new OpenIdUserDetails(urlId, DEFAULT_AUTHORITIES);
@@ -129,11 +138,18 @@ public class OpenIdUserDetailsService implements UserDetailsService, Authenticat
         return user;  
 	}
 	
-	private void registerUserWS(OpenIdUserDetails userOpenid) throws HttpRestException {
+	private void registerUserWS(OpenIdUserDetails userOpenid) {
 		//TODO getName size !
 		UserRequestDto userReq = new UserRequestDto(userOpenid.getName(), userOpenid.getEmail());
-        RequesterDelegate ws = new RequesterDelegate("/admin/user");
-        ws.post(userReq);
+
+        try {
+            adminUserService.createUser(userReq);
+        } catch (InvalidUserException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+
+//        RequesterDelegate ws = new RequesterDelegate("/admin/user");
+//        ws.post(userReq);
 	}
 
 }

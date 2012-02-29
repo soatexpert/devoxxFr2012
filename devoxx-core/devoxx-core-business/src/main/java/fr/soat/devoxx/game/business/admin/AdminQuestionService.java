@@ -41,8 +41,10 @@ import org.dozer.DozerBeanMapper;
 import org.dozer.Mapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
@@ -58,6 +60,7 @@ import java.util.Set;
  * Date: 21/12/11
  * Time: 15:55
  */
+@Component
 @Path("/admin/question")
 public class AdminQuestionService {
     private static final Logger LOGGER = LoggerFactory.getLogger(AdminQuestionService.class);

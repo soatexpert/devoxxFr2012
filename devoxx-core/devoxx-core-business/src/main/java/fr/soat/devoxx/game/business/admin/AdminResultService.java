@@ -26,6 +26,7 @@ package fr.soat.devoxx.game.business.admin;
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -39,12 +40,15 @@ import fr.soat.devoxx.game.admin.pojo.GameResult;
 import fr.soat.devoxx.game.admin.pojo.GameUserDataManager;
 import fr.soat.devoxx.game.admin.pojo.dto.AllResultResponseDto;
 import fr.soat.devoxx.game.pojo.ResultResponseDto;
+import org.springframework.stereotype.Component;
 
 /**
  * User: khanh
  * Date: 27/12/11
  * Time: 21:31
  */
+@Component
+@Singleton
 @Path("/admin/result")
 public class AdminResultService {
 

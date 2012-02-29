@@ -4,6 +4,14 @@
          xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
          version="3.0">
 
+
+    <absolute-ordering>
+        <name>devoxx-admin-client</name>
+        <name>devoxx-core-webapp</name>
+        <name>devoxx-client</name>
+
+    </absolute-ordering>
+
     <!--<servlet-mapping>-->
         <!--<servlet-name>javax.ws.rs.core.Application</servlet-name>-->
         <!--<url-pattern>/services/*</url-pattern>-->
@@ -70,10 +78,6 @@
         <!--<param-value>false</param-value>-->
     <!--</context-param>-->
 
-	<absolute-ordering>
-		<others />
-		<!-- <name>devoxx_admin_client</name> -->
-	</absolute-ordering>
 
     <welcome-file-list>
         <welcome-file>index.html</welcome-file>
