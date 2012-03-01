@@ -6,17 +6,15 @@
 
     <name>devoxx-core-webapp</name>
 
-    <!--<servlet>-->
-        <!--<servlet-name>javax.ws.rs.core.Application</servlet-name>-->
-        <!--<load-on-startup>1</load-on-startup>-->
-    <!--</servlet>-->
+    <servlet>
+        <servlet-name>javax.ws.rs.core.Application</servlet-name>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
 
-
-
-    <!--<servlet-mapping>-->
-        <!--<servlet-name>javax.ws.rs.core.Application</servlet-name>-->
-        <!--<url-pattern>/services/*</url-pattern>-->
-    <!--</servlet-mapping>-->
+    <servlet-mapping>
+        <servlet-name>javax.ws.rs.core.Application</servlet-name>
+        <url-pattern>/services/*</url-pattern>
+    </servlet-mapping>
 
     <!--<listener>-->
         <!--<listener-class>org.jboss.resteasy.plugins.server.servlet.ResteasyBootstrap</listener-class>-->
