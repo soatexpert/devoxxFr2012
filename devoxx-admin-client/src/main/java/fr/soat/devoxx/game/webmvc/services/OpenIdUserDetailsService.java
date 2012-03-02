@@ -124,7 +124,7 @@ public class OpenIdUserDetailsService implements UserDetailsService, Authenticat
 	
 	private OpenIdUserDetails getUserWS(String urlId) {
 
-        UserResponseDto userResp = adminUserService.getUser(Long.valueOf(urlId));
+        UserResponseDto userResp = adminUserService.getUserByOpenId(urlId);
         
 //		RequesterDelegate ws = new RequesterDelegate("/admin/user/" + urlId);
 //        UserResponseDto userResp = ws.get(UserResponseDto.class);
@@ -133,14 +133,14 @@ public class OpenIdUserDetailsService implements UserDetailsService, Authenticat
         OpenIdUserDetails user = new OpenIdUserDetails(urlId, DEFAULT_AUTHORITIES);
         user.setEmail(userResp.getMail());
         user.setName(userResp.getName());
-        user.setNewUser(false);
         
         return user;  
 	}
 	
 	private void registerUserWS(OpenIdUserDetails userOpenid) {
-		//TODO getName size !
-		UserRequestDto userReq = new UserRequestDto(userOpenid.getName(), userOpenid.getEmail());
+		UserRequestDto userReq = new UserRequestDto(userOpenid.getUsername());
+		userReq.setName(userOpenid.getName());
+		userReq.setMail(userOpenid.getEmail());
 
         try {
             adminUserService.createUser(userReq);

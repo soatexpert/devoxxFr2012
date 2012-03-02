@@ -39,6 +39,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.NoResultException;
 import javax.persistence.Persistence;
 import javax.persistence.PersistenceException;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -178,7 +179,10 @@ public class AdminUserService {
                 LOGGER.debug("get user {} failed: not found", userId);
                 throw new WebApplicationException(Status.NOT_FOUND);
             }
-        } catch (PersistenceException e) {
+        } catch (NoResultException e) {
+        	LOGGER.info("get user failed: NoResultException", e);
+        	return new UserResponseDto();
+		} catch (PersistenceException e) {
             LOGGER.debug("get user failed: PersistenceException", e);
             throw new WebApplicationException(Status.NOT_FOUND);
         }
@@ -204,7 +208,10 @@ public class AdminUserService {
         } catch (UnsupportedEncodingException e) {
         	LOGGER.error("UrlDecoding '/openId/"+urlId+"' error", e);
         	throw new WebApplicationException(Status.BAD_REQUEST);
-        } catch (PersistenceException e) {
+        } catch (NoResultException e) {
+        	LOGGER.info("get user failed: NoResultException", e);
+        	return new UserResponseDto();
+		} catch (PersistenceException e) {
             LOGGER.debug("get user failed: PersistenceException", e);
             throw new WebApplicationException(Status.NOT_FOUND);
         } 

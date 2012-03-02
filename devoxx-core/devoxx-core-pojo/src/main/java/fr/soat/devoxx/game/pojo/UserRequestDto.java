@@ -66,10 +66,9 @@ public class UserRequestDto implements Serializable {
 
 	public UserRequestDto() {
 	}
-
-	public UserRequestDto(String name, String mail) {
-		this.mail = mail;
-		this.name = name;
+	
+	public UserRequestDto(String urlId) {
+		this.urlId = urlId;
 	}
 
     @Override
