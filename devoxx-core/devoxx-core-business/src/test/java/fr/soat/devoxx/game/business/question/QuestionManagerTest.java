@@ -23,13 +23,11 @@
  */
 package fr.soat.devoxx.game.business.question;
 
-import static org.junit.Assert.*;
-
 import fr.soat.devoxx.game.business.GameUtils;
 import fr.soat.devoxx.game.pojo.question.QuestionType;
 import org.junit.Test;
 
-import javax.inject.Inject;
+import static org.junit.Assert.assertTrue;
 
 /**
  * User: khanh
@@ -38,7 +36,7 @@ import javax.inject.Inject;
  */
 public class QuestionManagerTest {
 
-//    @Inject
+    //    @Inject
     private QuestionManager instance = new QuestionManager(new GameUtils());
 
     @Test

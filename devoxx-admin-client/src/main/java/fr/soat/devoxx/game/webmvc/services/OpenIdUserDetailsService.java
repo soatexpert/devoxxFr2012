@@ -23,13 +23,15 @@
  */
 package fr.soat.devoxx.game.webmvc.services;
 
-import java.util.List;
-
 import fr.soat.devoxx.game.business.admin.AdminUserService;
 import fr.soat.devoxx.game.business.exception.InvalidUserException;
+import fr.soat.devoxx.game.business.exception.UserServiceException;
+import fr.soat.devoxx.game.pojo.UserRequestDto;
+import fr.soat.devoxx.game.pojo.UserResponseDto;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.AuthenticationUserDetailsService;
@@ -39,108 +41,112 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.openid.OpenIDAttribute;
 import org.springframework.security.openid.OpenIDAuthenticationToken;
 
-import fr.soat.devoxx.game.pojo.UserRequestDto;
-import fr.soat.devoxx.game.pojo.UserResponseDto;
-
-import javax.inject.Inject;
-import javax.ws.rs.WebApplicationException;
+import java.util.List;
 
 /**
  * @author aurelien
- * 
  */
 public class OpenIdUserDetailsService implements UserDetailsService, AuthenticationUserDetailsService<OpenIDAuthenticationToken> {
 
 
-    @Inject
+    @Autowired
     AdminUserService adminUserService;
-    
-	private static Logger LOGGER = LoggerFactory.getLogger(OpenIdUserDetailsService.class);
-	private static final List<GrantedAuthority> DEFAULT_AUTHORITIES = AuthorityUtils.createAuthorityList("ROLE_USER");
 
-	@Override
-	public UserDetails loadUserByUsername(String urlId) throws UsernameNotFoundException {
+    private static Logger LOGGER = LoggerFactory.getLogger(OpenIdUserDetailsService.class);
+    private static final List<GrantedAuthority> DEFAULT_AUTHORITIES = AuthorityUtils.createAuthorityList("ROLE_USER");
+
+    @Override
+    public UserDetails loadUserByUsername(String urlId) throws UsernameNotFoundException {
 //		try {
-	        return getUserWS(urlId);
+        try {
+            return getUserWS(urlId);
+        } catch (UserServiceException e) {
+            LOGGER.debug("UserId : {} doesn't exist", e);
+            throw new UsernameNotFoundException("UserId : " + urlId + " doesn't exist in database", e);
+        }
 //        } catch (HttpRestException e) {
 //            LOGGER.debug("UserId : " + urlId + " doesn't exist", e);
 //	        throw new UsernameNotFoundException("UserId : " + urlId + " doesn't exist in database", e);
 //        }
-	}
+    }
 
-	/**
-	 * Implementation of {@code AuthenticationUserDetailsService} which allows
-	 * full access to the submitted {@code Authentication} object. Used by the
-	 * OpenIDAuthenticationProvider.
-	 */
-	@Override
-	public UserDetails loadUserDetails(OpenIDAuthenticationToken token) throws UsernameNotFoundException {
-		
-		String urlId = token.getIdentityUrl();
+    /**
+     * Implementation of {@code AuthenticationUserDetailsService} which allows
+     * full access to the submitted {@code Authentication} object. Used by the
+     * OpenIDAuthenticationProvider.
+     */
+    @Override
+    public UserDetails loadUserDetails(OpenIDAuthenticationToken token) throws UsernameNotFoundException {
+
+        String urlId = token.getIdentityUrl();
         LOGGER.info("urlId=" + urlId);
-		
-		try {
-	        return getUserWS(urlId);
-        } catch (WebApplicationException e) {
+
+        try {
+            return getUserWS(urlId);
+        } catch (UserServiceException e) {
             LOGGER.debug("UserId : " + urlId + " doesn't exist in database", e);
         }
 
-		String email = null;
-		String firstName = null;
-		String lastName = null;
-		String fullName = null;
+        String email = null;
+        String firstName = null;
+        String lastName = null;
+        String fullName = null;
 
-		List<OpenIDAttribute> attributes = token.getAttributes();
+        List<OpenIDAttribute> attributes = token.getAttributes();
         LOGGER.info("attributes=" + attributes);
 
-		for (OpenIDAttribute attribute : attributes) {
-			if (attribute.getName().equals("email")) {
-				email = attribute.getValues().get(0);
-			}
-			if (attribute.getName().equals("firstname")) {
-				firstName = attribute.getValues().get(0);
-			}
-			if (attribute.getName().equals("fullname")) {
-				fullName = attribute.getValues().get(0);
-			}
-		}
-		
-		if (StringUtils.isEmpty(fullName) && (!StringUtils.isEmpty(firstName) || !StringUtils.isEmpty(lastName))) {
-			fullName = firstName + " " + lastName;
-		}
-		
-		OpenIdUserDetails user = new OpenIdUserDetails(urlId, DEFAULT_AUTHORITIES);
+        for (OpenIDAttribute attribute : attributes) {
+            if (attribute.getName().equals("email")) {
+                email = attribute.getValues().get(0);
+            }
+            if (attribute.getName().equals("firstname")) {
+                firstName = attribute.getValues().get(0);
+            }
+            if (attribute.getName().equals("fullname")) {
+                fullName = attribute.getValues().get(0);
+            }
+        }
+
+        if (StringUtils.isEmpty(fullName) && (!StringUtils.isEmpty(firstName) || !StringUtils.isEmpty(lastName))) {
+            fullName = firstName + " " + lastName;
+        }
+
+        OpenIdUserDetails user = new OpenIdUserDetails(urlId, DEFAULT_AUTHORITIES);
         user.setEmail(email);
         user.setName(fullName);
-        
+
 //        try {
-	        registerUserWS(user);
+        try {
+            registerUserWS(user);
+        } catch (UserServiceException e) {
+            LOGGER.error("UserId : {} persist error", e);
+        }
 //        } catch (HttpRestException e) {
 //            LOGGER.error("UserId : " + urlId + " persist error", e);
 //        }
 
-		return user;
-	}
-	
-	private OpenIdUserDetails getUserWS(String urlId) {
+        return user;
+    }
+
+    private OpenIdUserDetails getUserWS(String urlId) throws UserServiceException {
 
         UserResponseDto userResp = adminUserService.getUserByOpenId(urlId);
-        
+
 //		RequesterDelegate ws = new RequesterDelegate("/admin/user/" + urlId);
 //        UserResponseDto userResp = ws.get(UserResponseDto.class);
-        
+
         //TODO User Get Role !
         OpenIdUserDetails user = new OpenIdUserDetails(urlId, DEFAULT_AUTHORITIES);
         user.setEmail(userResp.getMail());
         user.setName(userResp.getName());
-        
-        return user;  
-	}
-	
-	private void registerUserWS(OpenIdUserDetails userOpenid) {
-		UserRequestDto userReq = new UserRequestDto(userOpenid.getUsername());
-		userReq.setName(userOpenid.getName());
-		userReq.setMail(userOpenid.getEmail());
+
+        return user;
+    }
+
+    private void registerUserWS(OpenIdUserDetails userOpenid) throws UserServiceException {
+        UserRequestDto userReq = new UserRequestDto(userOpenid.getUsername());
+        userReq.setName(userOpenid.getName());
+        userReq.setMail(userOpenid.getEmail());
 
         try {
             adminUserService.createUser(userReq);
@@ -150,6 +156,6 @@ public class OpenIdUserDetailsService implements UserDetailsService, Authenticat
 
 //        RequesterDelegate ws = new RequesterDelegate("/admin/user");
 //        ws.post(userReq);
-	}
+    }
 
 }

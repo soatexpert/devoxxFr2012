@@ -27,30 +27,30 @@ import fr.soat.devoxx.game.admin.pojo.dto.AllUserResponseDto;
 import fr.soat.devoxx.game.business.admin.AdminQuestionService;
 import fr.soat.devoxx.game.business.admin.AdminResultService;
 import fr.soat.devoxx.game.business.admin.AdminUserService;
+import fr.soat.devoxx.game.business.exception.UserServiceException;
 import fr.soat.devoxx.game.pojo.ResultResponseDto;
 import fr.soat.devoxx.game.pojo.UserResponseDto;
 import fr.soat.devoxx.game.webmvc.utils.TilesUtil;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import javax.inject.Inject;
-
 @Controller
 @RequestMapping(value = "/admin")
 public class AdminController {
 
-    @Inject
+    @Autowired
     AdminQuestionService adminQuestionService;
 
-    @Inject
+    @Autowired
     AdminResultService adminResultService;
 
-    @Inject
+    @Autowired
     AdminUserService adminUserService;
 
     private static Logger LOGGER = LoggerFactory.getLogger(AdminController.class);
@@ -62,7 +62,7 @@ public class AdminController {
     }
 
     @RequestMapping(value = "/user")
-    public String showAllUser(Model model) {
+    public String showAllUser(Model model) throws UserServiceException {
         String forward = TilesUtil.DFR_ERRORS_ERRORMSG_PAGE;
 //		try {
         AllUserResponseDto allUsers = adminUserService.getAllUsers();
@@ -79,7 +79,7 @@ public class AdminController {
     }
 
     @RequestMapping(value = "/user/{username}")
-    public String showUser(@PathVariable String username, Model model) {
+    public String showUser(@PathVariable String username, Model model) throws UserServiceException {
         String forward = TilesUtil.DFR_ERRORS_ERRORMSG_PAGE;
 //		try {
         UserResponseDto userResponse = adminUserService.getUser(Long.valueOf(username));
@@ -106,7 +106,7 @@ public class AdminController {
     }
 
     @RequestMapping(value = "/user/{username}/delete")
-    public String removeUser(@PathVariable String username, Model model) {
+    public String removeUser(@PathVariable String username, Model model) throws UserServiceException {
         String forward = TilesUtil.DFR_ERRORS_ERRORMSG_PAGE;
 //		try {
         adminUserService.deleteUser(Long.valueOf(username));

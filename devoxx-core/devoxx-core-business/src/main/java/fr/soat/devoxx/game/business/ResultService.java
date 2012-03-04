@@ -23,15 +23,9 @@
  */
 package fr.soat.devoxx.game.business;
 
-import javax.inject.Inject;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
-
 import fr.soat.devoxx.game.business.admin.AdminResultService;
 import fr.soat.devoxx.game.pojo.ResultResponseDto;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
@@ -40,16 +34,12 @@ import org.springframework.stereotype.Component;
  * Time: 21:31
  */
 @Component
-@Path("/services/result")
 public class ResultService {
 
-    @Inject
+    @Autowired
     private AdminResultService delegate;
 
-    @Path("/{userId}")
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    public ResultResponseDto getResultForUser(@PathParam("userId") Long userId) {
+    public ResultResponseDto getResultForUser(Long userId) {
         ResultResponseDto result = delegate.getResultForUser(userId);
         return result;
     }

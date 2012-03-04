@@ -23,7 +23,6 @@
  */
 package fr.soat.devoxx.game.business.admin;
 
-import fr.soat.devoxx.game.QuestionsNotifier;
 import fr.soat.devoxx.game.admin.pojo.Game;
 import fr.soat.devoxx.game.admin.pojo.GameUserDataManager;
 import fr.soat.devoxx.game.admin.pojo.dto.QuestionRequestDto;
@@ -36,21 +35,17 @@ import fr.soat.devoxx.game.pojo.QuestionResponseDto;
 import fr.soat.devoxx.game.pojo.ResponseRequestDto;
 import fr.soat.devoxx.game.pojo.ResponseResponseDto;
 import fr.soat.devoxx.game.pojo.question.ResponseType;
-import org.apache.commons.lang.StringUtils;
 import org.dozer.DozerBeanMapper;
 import org.dozer.Mapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
-import javax.ws.rs.*;
-import javax.ws.rs.core.MediaType;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
@@ -61,7 +56,6 @@ import java.util.Set;
  * Time: 15:55
  */
 @Component
-@Path("/services/admin/question")
 public class AdminQuestionService {
     private static final Logger LOGGER = LoggerFactory.getLogger(AdminQuestionService.class);
 
@@ -69,10 +63,10 @@ public class AdminQuestionService {
 
     private final Mapper dozerMapper = new DozerBeanMapper();
 
-    @Inject
+    @Autowired
     QuestionManager questionManager;
 
-    @Inject
+    @Autowired
     GameUserDataManager gameUserDataManager;
 
     private final Validator validator;
@@ -89,41 +83,23 @@ public class AdminQuestionService {
         this.gameUserDataManager = gameUserDataManager;
     }
 
-    @Path("/")
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
     public QuestionResponseDto getQuestion() {
         return dozerMapper.map(questionManager.loadQuestions().getRandomQuestion(), QuestionResponseDto.class);
     }
 
-    @Path("/")
-    @POST
-    @Produces(MediaType.APPLICATION_JSON)
-    public javax.ws.rs.core.Response addQuestion(QuestionRequestDto questionRequest) {
+    public void addQuestion(QuestionRequestDto questionRequest) {
         //TODO add question processing
-        return javax.ws.rs.core.Response.ok().build();
     }
 
-    @Path("/{questionId}")
-    @PUT
-    @Produces(MediaType.APPLICATION_JSON)
-    public javax.ws.rs.core.Response updateQuestion(@PathParam("questionId") Integer questionId, QuestionRequestDto questionRequest) {
+    public void updateQuestion(Integer questionId, QuestionRequestDto questionRequest) {
         //TODO update question processing
-        return javax.ws.rs.core.Response.ok().build();
     }
 
-    @Path("/{questionId}")
-    @DELETE
-    @Produces(MediaType.APPLICATION_JSON)
-    public javax.ws.rs.core.Response updateQuestion(@PathParam("questionId") Integer questionId) {
+    public void updateQuestion(Integer questionId) {
         //TODO delete question processing
-        return javax.ws.rs.core.Response.ok().build();
     }
 
-    @Path("/{userId}")
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    public AllQuestionResponseDto getAllQuestions(@PathParam("userId") Long userId) {
+    public AllQuestionResponseDto getAllQuestions(Long userId) {
         List<Game> games = gameUserDataManager.getGamesByResultType(userId, ResponseType.NEED_RESPONSE);
         AllQuestionResponseDto results = new AllQuestionResponseDto();
         for (Game game : games) {
@@ -132,10 +108,6 @@ public class AdminQuestionService {
         return results;
     }
 
-    @Path("/{userId}/reply")
-    @POST
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
     public ResponseResponseDto giveResponse(ResponseRequestDto responseDto) {
         Response res = dozerMapper.map(responseDto, Response.class);
 
@@ -179,15 +151,14 @@ public class AdminQuestionService {
         return response;
     }
 
-    @Path("/{userId}/create")
-    @PUT
-    public javax.ws.rs.core.Response addQuestionForUser(@PathParam("userId") Long userId) {
+    public void addQuestionForUser(Long userId) {
         List<Game> gamesAllReadyPlayed = gameUserDataManager.getGames(userId);
         List<Question> allQuestions = questionManager.loadQuestions().getQuestions();
 
         if (gamesAllReadyPlayed.size() == allQuestions.size()) {
             //NOTHING TO DO : the player allready answered all questions
-            return javax.ws.rs.core.Response.ok().build();
+//            return javax.ws.rs.core.Response.ok().build();
+            return;
         }
 
         Question randomQuestion = getRandomQuestion(gamesAllReadyPlayed, allQuestions);
@@ -201,7 +172,6 @@ public class AdminQuestionService {
         } catch (StorageException e) {
             LOGGER.error("unable to store result in mongoDb: {}", e.getMessage());
         }
-        return javax.ws.rs.core.Response.ok().build();
     }
 
     private Question getRandomQuestion(List<Game> gamesAllReadyPlayed, List<Question> allQuestions) {

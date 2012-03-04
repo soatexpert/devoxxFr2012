@@ -5,8 +5,8 @@ import fr.soat.devoxx.game.business.QuestionService;
 import fr.soat.devoxx.game.pojo.ResponseResponseDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
-import javax.inject.Inject;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -24,7 +24,7 @@ public class ResponseServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private static final Logger LOGGER = LoggerFactory.getLogger(ResponseServlet.class);
 
-    @Inject
+    @Autowired
     QuestionService questionService;
 
     /**
@@ -34,7 +34,7 @@ public class ResponseServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        Long userId = Long.parseLong( request.getParameter("userId") );
+        Long userId = Long.parseLong(request.getParameter("userId"));
 
         String idQuestion = request.getParameter("questionId");
 

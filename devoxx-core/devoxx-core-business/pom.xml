@@ -50,19 +50,19 @@
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
         </dependency>
-        <dependency>
-            <groupId>javax.ws.rs</groupId>
-            <artifactId>jsr311-api</artifactId>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>javax.ws.rs</groupId>-->
+            <!--<artifactId>jsr311-api</artifactId>-->
+        <!--</dependency>-->
         <dependency>
             <groupId>net.sf.dozer</groupId>
             <artifactId>dozer</artifactId>
         </dependency>
-        <dependency>
-            <groupId>javax.enterprise</groupId>
-            <artifactId>cdi-api</artifactId>
-            <scope>provided</scope>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>javax.enterprise</groupId>-->
+            <!--<artifactId>cdi-api</artifactId>-->
+            <!--<scope>provided</scope>-->
+        <!--</dependency>-->
         <!--<dependency>-->
             <!--<groupId>javax.ejb</groupId>-->
             <!--<artifactId>ejb-api</artifactId>-->

@@ -52,12 +52,12 @@
         <logback.version>1.0.0</logback.version>
         <commons-lang.version>2.6</commons-lang.version>
         <commons-configuration.version>1.7</commons-configuration.version>
-        <jersey.version>1.11</jersey.version>
+        <!--<jersey.version>1.11</jersey.version>-->
         <hibernate-validator.version>4.2.0.Final</hibernate-validator.version>
 
         <validation-api.version>1.0.0.GA</validation-api.version>
-        <jsr311-api.version>1.1.1</jsr311-api.version>
-        <javax.inject.version>1.0-SP4</javax.inject.version>
+        <!--<jsr311-api.version>1.1.1</jsr311-api.version>-->
+        <!--<javax.inject.version>1.0-SP4</javax.inject.version>-->
 
 
         <junit.version>4.10</junit.version>
@@ -184,17 +184,17 @@
                 <version>${validation-api.version}</version>
             </dependency>
 
-            <dependency>
-                <groupId>javax.enterprise</groupId>
-                <artifactId>cdi-api</artifactId>
-                <version>${javax.inject.version}</version>
-            </dependency>
+            <!--<dependency>-->
+                <!--<groupId>javax.enterprise</groupId>-->
+                <!--<artifactId>cdi-api</artifactId>-->
+                <!--<version>${javax.inject.version}</version>-->
+            <!--</dependency>-->
 
-            <dependency>
-                <groupId>javax.ws.rs</groupId>
-                <artifactId>jsr311-api</artifactId>
-                <version>${jsr311-api.version}</version>
-            </dependency>
+            <!--<dependency>-->
+                <!--<groupId>javax.ws.rs</groupId>-->
+                <!--<artifactId>jsr311-api</artifactId>-->
+                <!--<version>${jsr311-api.version}</version>-->
+            <!--</dependency>-->
 
             <dependency>
                 <groupId>org.hibernate</groupId>
@@ -208,26 +208,26 @@
                 <artifactId>mysql-connector-java</artifactId>
                 <version>${mysql-connector-java.version}</version>
             </dependency>
-            <dependency>
-                <groupId>com.sun.jersey</groupId>
-                <artifactId>jersey-server</artifactId>
-                <version>${jersey.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.sun.jersey</groupId>
-                <artifactId>jersey-servlet</artifactId>
-                <version>${jersey.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.sun.jersey</groupId>
-                <artifactId>jersey-json</artifactId>
-                <version>${jersey.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.sun.jersey</groupId>
-                <artifactId>jersey-client</artifactId>
-                <version>${jersey.version}</version>
-            </dependency>
+            <!--<dependency>-->
+                <!--<groupId>com.sun.jersey</groupId>-->
+                <!--<artifactId>jersey-server</artifactId>-->
+                <!--<version>${jersey.version}</version>-->
+            <!--</dependency>-->
+            <!--<dependency>-->
+                <!--<groupId>com.sun.jersey</groupId>-->
+                <!--<artifactId>jersey-servlet</artifactId>-->
+                <!--<version>${jersey.version}</version>-->
+            <!--</dependency>-->
+            <!--<dependency>-->
+                <!--<groupId>com.sun.jersey</groupId>-->
+                <!--<artifactId>jersey-json</artifactId>-->
+                <!--<version>${jersey.version}</version>-->
+            <!--</dependency>-->
+            <!--<dependency>-->
+                <!--<groupId>com.sun.jersey</groupId>-->
+                <!--<artifactId>jersey-client</artifactId>-->
+                <!--<version>${jersey.version}</version>-->
+            <!--</dependency>-->
 
             <dependency>
                 <groupId>ch.qos.logback</groupId>
@@ -377,25 +377,6 @@
 
 
         </plugins>
-
-        <pluginManagement>
-            <plugins>
-                <plugin>
-                    <groupId>org.zeroturnaround</groupId>
-                    <artifactId>jrebel-maven-plugin</artifactId>
-                    <version>1.0.7</version>
-                    <executions>
-                        <execution>
-                            <id>generate-rebel-xml</id>
-                            <phase>process-resources</phase>
-                            <goals>
-                                <goal>generate</goal>
-                            </goals>
-                        </execution>
-                    </executions>
-                </plugin>
-            </plugins>
-        </pluginManagement>
 
     </build>
 

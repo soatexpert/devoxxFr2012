@@ -18,11 +18,11 @@
             <artifactId>devoxx-core-pojo</artifactId>
         </dependency>
 
-        <dependency>
-            <groupId>javax.enterprise</groupId>
-            <artifactId>cdi-api</artifactId>
-            <scope>provided</scope>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>javax.enterprise</groupId>-->
+            <!--<artifactId>cdi-api</artifactId>-->
+            <!--<scope>provided</scope>-->
+        <!--</dependency>-->
 
 
         <dependency>

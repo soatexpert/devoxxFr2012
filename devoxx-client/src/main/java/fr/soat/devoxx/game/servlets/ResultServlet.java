@@ -2,8 +2,8 @@ package fr.soat.devoxx.game.servlets;
 
 import fr.soat.devoxx.game.business.ResultService;
 import fr.soat.devoxx.game.pojo.ResultResponseDto;
+import org.springframework.beans.factory.annotation.Autowired;
 
-import javax.inject.Inject;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -19,7 +19,7 @@ public class ResultServlet extends HttpServlet {
     private static final String RESULT_FORWARD = "/result.jsp";
     private static final String ERROR_FORWARD = "/error.jsp";
 
-    @Inject
+    @Autowired
     ResultService resultService;
 
     @Override
@@ -28,7 +28,7 @@ public class ResultServlet extends HttpServlet {
 
         String forward = "";
 
-        Long userId = Long.parseLong( request.getParameter("userId") );
+        Long userId = Long.parseLong(request.getParameter("userId"));
 
         if (userId != null) {
             ResultResponseDto result = resultService.getResultForUser(userId);

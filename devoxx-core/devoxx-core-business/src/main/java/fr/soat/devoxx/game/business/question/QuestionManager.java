@@ -31,11 +31,13 @@ import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.PropertiesConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.NoSuchElementException;
 
 /**
  * User: khanh
@@ -43,7 +45,6 @@ import java.util.*;
  * Time: 08:41
  */
 @Component
-@Singleton
 public class QuestionManager {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(QuestionManager.class);
@@ -60,7 +61,7 @@ public class QuestionManager {
 
     private Questions questions = null;
 
-    @Inject
+    @Autowired
     public QuestionManager(GameUtils gameUtils) {
 //        QUESTION_FILE_PATH = GameUtils.INSTANCE.getQuestionFilePath();
         QUESTION_FILE_PATH = gameUtils.getQuestionFilePath();
@@ -93,11 +94,11 @@ public class QuestionManager {
 
     public Questions loadQuestions() {
         if (this.questions == null) {
-        int nbQuestions = getNbQuestions();
+            int nbQuestions = getNbQuestions();
 
-        Questions result = new Questions();
-        addQuestions(nbQuestions, result);
-        questions = result;
+            Questions result = new Questions();
+            addQuestions(nbQuestions, result);
+            questions = result;
         }
         return questions;
     }

@@ -26,6 +26,8 @@ package fr.soat.devoxx.game.business.admin;
 import fr.soat.devoxx.game.admin.pojo.GameUserDataManager;
 import fr.soat.devoxx.game.admin.pojo.dto.AllUserResponseDto;
 import fr.soat.devoxx.game.business.exception.InvalidUserException;
+import fr.soat.devoxx.game.business.exception.Status;
+import fr.soat.devoxx.game.business.exception.UserServiceException;
 import fr.soat.devoxx.game.persistent.User;
 import fr.soat.devoxx.game.pojo.UserRequestDto;
 import fr.soat.devoxx.game.pojo.UserResponseDto;
@@ -33,26 +35,14 @@ import org.dozer.DozerBeanMapper;
 import org.dozer.Mapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.NoResultException;
-import javax.persistence.Persistence;
-import javax.persistence.PersistenceException;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
+import javax.persistence.*;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
-import javax.ws.rs.*;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response.Status;
-
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.List;
@@ -64,14 +54,12 @@ import java.util.Set;
  * Time: 14:12
  */
 @Component
-@Singleton
-@Path("/services/admin/user")
 public class AdminUserService {
     private final static Logger LOGGER = LoggerFactory.getLogger(AdminUserService.class);
 
     private String PERSISTENCE_UNIT_NAME = "devoxx";
 
-    @Inject
+    @Autowired
     private GameUserDataManager gameUserDataManager;
 
     private final Validator validator;
@@ -95,7 +83,7 @@ public class AdminUserService {
     }
 
     public AdminUserService() {
-    	init();
+        init();
     }
 
     AdminUserService(String persistenceUnitName,
@@ -111,10 +99,7 @@ public class AdminUserService {
         }
     }
 
-    @Path("/")
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    public AllUserResponseDto getAllUsers() {
+    public AllUserResponseDto getAllUsers() throws UserServiceException {
         AllUserResponseDto allUsersDto = new AllUserResponseDto();
         try {
             @SuppressWarnings("unchecked")
@@ -123,17 +108,14 @@ public class AdminUserService {
                 allUsersDto.addUserResponse(this.dozerMapper.map(user, UserResponseDto.class));
             }
         } catch (RuntimeException e) {
-        	LOGGER.debug("Get all users failed", e);
-			throw new WebApplicationException(Status.BAD_REQUEST);
-		}
+            LOGGER.debug("Get all users failed", e);
+            throw new UserServiceException(Status.BAD_REQUEST);
+        }
         return allUsersDto;
     }
 
-    @Path("/")
-    @POST
-    @Produces(MediaType.APPLICATION_JSON)
     public UserResponseDto createUser(UserRequestDto userRequestDto)
-            throws InvalidUserException {
+            throws InvalidUserException, UserServiceException {
         try {
             User user = dozerMapper.map(userRequestDto, User.class);
 
@@ -158,15 +140,12 @@ public class AdminUserService {
 
             return dozerMapper.map(user, UserResponseDto.class);
         } catch (RuntimeException e) {
-        	LOGGER.debug("Post new user failed", e);
-			throw new WebApplicationException(Status.BAD_REQUEST);
-		}
+            LOGGER.debug("Post new user failed", e);
+            throw new UserServiceException(e);
+        }
     }
 
-    @Path("/{userId}")
-    @GET
-    @Produces({MediaType.APPLICATION_JSON})
-    public UserResponseDto getUser(@PathParam("userId") Long userId) {
+    public UserResponseDto getUser(Long userId) throws UserServiceException {
         try {
             User user = getUserById(userId);
 
@@ -177,23 +156,20 @@ public class AdminUserService {
                 return response;
             } else {
                 LOGGER.debug("get user {} failed: not found", userId);
-                throw new WebApplicationException(Status.NOT_FOUND);
+                throw new UserServiceException(Status.NOT_FOUND);
             }
         } catch (NoResultException e) {
-        	LOGGER.info("get user failed: NoResultException", e);
-        	return new UserResponseDto();
-		} catch (PersistenceException e) {
+            LOGGER.info("get user failed: NoResultException", e);
+            return new UserResponseDto();
+        } catch (PersistenceException e) {
             LOGGER.debug("get user failed: PersistenceException", e);
-            throw new WebApplicationException(Status.NOT_FOUND);
+            throw new UserServiceException(e);
         }
     }
-    
-    @Path("/openId/{urlId}")
-    @GET
-    @Produces({MediaType.APPLICATION_JSON})
-    public UserResponseDto getUserByOpenId(@PathParam("urlId") String urlId) {
+
+    public UserResponseDto getUserByOpenId(String urlId) throws UserServiceException {
         try {
-        	urlId = URLDecoder.decode(urlId, "UTF-8");
+            urlId = URLDecoder.decode(urlId, "UTF-8");
             User user = getUserByUrlId(urlId);
 
             if (null != user) {
@@ -203,29 +179,25 @@ public class AdminUserService {
                 return response;
             } else {
                 LOGGER.debug("get user {} failed: not found", urlId);
-                throw new WebApplicationException(Status.NOT_FOUND);
+                throw new UserServiceException(Status.NOT_FOUND);
             }
         } catch (UnsupportedEncodingException e) {
-        	LOGGER.error("UrlDecoding '/openId/"+urlId+"' error", e);
-        	throw new WebApplicationException(Status.BAD_REQUEST);
+            LOGGER.error("UrlDecoding '/openId/" + urlId + "' error", e);
+            throw new UserServiceException(Status.BAD_REQUEST);
         } catch (NoResultException e) {
-        	LOGGER.info("get user failed: NoResultException", e);
-        	return new UserResponseDto();
-		} catch (PersistenceException e) {
+            LOGGER.info("get user failed: NoResultException", e);
+            return new UserResponseDto();
+        } catch (PersistenceException e) {
             LOGGER.debug("get user failed: PersistenceException", e);
-            throw new WebApplicationException(Status.NOT_FOUND);
-        } 
+            throw new UserServiceException(Status.NOT_FOUND);
+        }
     }
 
-    @Path("/{userId}/games")
-    @DELETE
-    public void cleanUserGames(@PathParam("userId") Long userId) {
+    public void cleanUserGames(Long userId) {
         this.gameUserDataManager.cleanUser(userId);
     }
 
-    @Path("/{userId}")
-    @DELETE
-    public void deleteUser(@PathParam("userId") Long userId) {
+    public void deleteUser(Long userId) throws UserServiceException {
         try {
 //			List<User> users = getUsers(em, userName);
             User user = getUserById(userId);
@@ -236,7 +208,7 @@ public class AdminUserService {
                 em.getTransaction().commit();
             } else {
                 LOGGER.debug("delete user {} failed: not found", userId);
-                throw new WebApplicationException(Status.NOT_FOUND);
+                throw new UserServiceException(Status.NOT_FOUND);
             }
             this.gameUserDataManager.destroyUser(userId);
 
@@ -264,16 +236,16 @@ public class AdminUserService {
 //                return em.createQuery(criteriaQuery).setParameter("name",
 //                userName).getSingleResult();
     }
-    
+
     private User getUserByUrlId(String urlId) throws PersistenceException {
         return (User) em.createQuery("select u from User u where u.urlId = :urlId")
                 .setParameter("urlId", urlId).getSingleResult();
     }
 
-	@Override
+    @Override
     protected void finalize() throws Throwable {
-	    close();
-	    super.finalize();
+        close();
+        super.finalize();
     }
 
 //    private CriteriaQuery<User> createSimpleUserCriteriaQuery(EntityManager em,
@@ -292,5 +264,5 @@ public class AdminUserService {
 //                queryBuilder.equal(root.get("name"), userName));
 //        return criteriaQuery;
 //    }
-    
+
 }

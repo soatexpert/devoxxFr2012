@@ -21,37 +21,20 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package fr.soat.devoxx.game;
-
-import fr.soat.devoxx.game.business.question.Question;
-
-import javax.inject.Singleton;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+package fr.soat.devoxx.game.business.exception;
 
 /**
  * User: khanh
- * Date: 13/02/12
- * Time: 17:02
+ * Date: 04/03/12
+ * Time: 11:51
  */
-@Singleton
-public class QuestionsNotifier {
+public class UserServiceException extends Exception {
 
-    private Map<String, IQuestionListener> questionsListener = new ConcurrentHashMap<String, IQuestionListener>();
-
-    public void addListener(String userName, IQuestionListener questionListener) {
-        questionsListener.put(userName, questionListener);
-    }
-
-    public void notifyListener(String userName, Question question) {
-        IQuestionListener questionListener = questionsListener.get(userName);
-        if (questionListener != null) {
-            questionListener.callback(question);
-        }
+    public UserServiceException(Throwable e) {
+        super(e);
     }
     
-    public void removeListener(String userName) {
-        this.questionsListener.remove(userName);
+    public UserServiceException(Status status) {
+        super(status.name());
     }
-
 }

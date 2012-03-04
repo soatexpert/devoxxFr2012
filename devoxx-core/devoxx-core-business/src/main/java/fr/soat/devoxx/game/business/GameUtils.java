@@ -25,12 +25,10 @@ package fr.soat.devoxx.game.business;
 
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.PropertiesConfiguration;
-import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-import javax.inject.Singleton;
 import java.util.NoSuchElementException;
 
 /**
@@ -39,17 +37,16 @@ import java.util.NoSuchElementException;
  * Time: 12:03
  */
 //@Path("/gridService")
-@Singleton
 @Component
 public class GameUtils {
 //public enum GameUtils {
 //    INSTANCE;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(GameUtils.class);
-    
+
     private static final String GAME_PROPERTIES_FILENAME = "game.properties";
-    private static final String GAME_QUESTION_FILE_PATH = "questions.file.path";    
-    private static final String GAME_QUESTION_FILE_PATH_DEFAULT_VALUE="question.properties";
+    private static final String GAME_QUESTION_FILE_PATH = "questions.file.path";
+    private static final String GAME_QUESTION_FILE_PATH_DEFAULT_VALUE = "question.properties";
 
     private PropertiesConfiguration configuration;
 
@@ -79,7 +76,7 @@ public class GameUtils {
         try {
             return this.configuration.getString(GAME_QUESTION_FILE_PATH);
         } catch (NoSuchElementException e) {
-            LOGGER.warn("unable to get {} in {}: will use default value {}", new String[] {GAME_QUESTION_FILE_PATH, GAME_PROPERTIES_FILENAME, GAME_QUESTION_FILE_PATH_DEFAULT_VALUE});
+            LOGGER.warn("unable to get {} in {}: will use default value {}", new String[]{GAME_QUESTION_FILE_PATH, GAME_PROPERTIES_FILENAME, GAME_QUESTION_FILE_PATH_DEFAULT_VALUE});
             return GAME_QUESTION_FILE_PATH_DEFAULT_VALUE;
         }
     }

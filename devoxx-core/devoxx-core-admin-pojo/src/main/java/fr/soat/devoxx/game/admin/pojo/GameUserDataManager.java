@@ -35,7 +35,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-import javax.inject.Singleton;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
@@ -46,7 +45,6 @@ import java.util.List;
  * Time: 20:25
  */
 
-@Singleton
 @Component
 public class GameUserDataManager {
 

@@ -30,11 +30,9 @@ import fr.soat.devoxx.game.pojo.ResponseRequestDto;
 import fr.soat.devoxx.game.pojo.ResponseResponseDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javax.inject.Inject;
-import javax.ws.rs.*;
-import javax.ws.rs.core.MediaType;
 import java.util.List;
 
 /**
@@ -43,28 +41,20 @@ import java.util.List;
  * Time: 15:55
  */
 @Component
-@Path("/services/question")
 public class QuestionService {
     private static final Logger LOGGER = LoggerFactory.getLogger(QuestionService.class);
 
-    @Inject
+    @Autowired
     private AdminQuestionService delegate;
 
-    @Path("/")
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
     public QuestionResponseDto getQuestion() {
         QuestionResponseDto result = delegate.getQuestion();
         return result;
     }
 
-    @Path("/reply")
-    @POST
-    @Produces(MediaType.APPLICATION_JSON)
-    public ResponseResponseDto giveResponse(@FormParam("userId") Long userId,
-                                            @FormParam("id") Integer questionId,
-                                            @FormParam("responses") List responses) {
-        //JERSEY-569 - http://java.net/jira/browse/JERSEY-569
+    public ResponseResponseDto giveResponse(Long userId,
+                                            Integer questionId,
+                                            List<String> responses) {
         ResponseRequestDto responseDto = new ResponseRequestDto();
         responseDto.setUserId(userId);
         responseDto.setId(questionId);
@@ -74,10 +64,7 @@ public class QuestionService {
         return result;
     }
 
-    @Path("/{userId}")
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    public AllQuestionResponseDto getAllQuestions(@PathParam("userId") Long userId) {
+    public AllQuestionResponseDto getAllQuestions(Long userId) {
         AllQuestionResponseDto result = delegate.getAllQuestions(userId);
         return result;
     }

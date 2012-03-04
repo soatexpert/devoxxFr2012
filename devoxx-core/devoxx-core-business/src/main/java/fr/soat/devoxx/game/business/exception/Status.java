@@ -21,16 +21,14 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package fr.soat.devoxx.game;
-
-import fr.soat.devoxx.game.business.question.Question;
+package fr.soat.devoxx.game.business.exception;
 
 /**
  * User: khanh
- * Date: 13/02/12
- * Time: 17:04
+ * Date: 04/03/12
+ * Time: 11:54
  */
-public interface IQuestionListener {
-
-    void callback(Question question);
+public enum Status {
+    NOT_FOUND,
+    BAD_REQUEST
 }

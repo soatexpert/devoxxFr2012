@@ -23,24 +23,16 @@
  */
 package fr.soat.devoxx.game.business.admin;
 
-import java.util.List;
-
-import javax.inject.Inject;
-import javax.inject.Singleton;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
-
-import org.dozer.DozerBeanMapper;
-import org.dozer.Mapper;
-
 import fr.soat.devoxx.game.admin.pojo.GameResult;
 import fr.soat.devoxx.game.admin.pojo.GameUserDataManager;
 import fr.soat.devoxx.game.admin.pojo.dto.AllResultResponseDto;
 import fr.soat.devoxx.game.pojo.ResultResponseDto;
+import org.dozer.DozerBeanMapper;
+import org.dozer.Mapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 /**
  * User: khanh
@@ -48,32 +40,24 @@ import org.springframework.stereotype.Component;
  * Time: 21:31
  */
 @Component
-@Singleton
-@Path("/services/admin/result")
 public class AdminResultService {
 
-    @Inject
+    @Autowired
     private GameUserDataManager gameUserDataManager;
 
     private final Mapper dozerMapper = new DozerBeanMapper();
 
-    @Path("/{userId}")
-    @GET
-    @Produces({MediaType.APPLICATION_JSON})
-    public ResultResponseDto getResultForUser(@PathParam("userId") Long userId) {
-    	GameResult gameResult = gameUserDataManager.getResult(userId);
+    public ResultResponseDto getResultForUser(Long userId) {
+        GameResult gameResult = gameUserDataManager.getResult(userId);
         return dozerMapper.map(gameResult, ResultResponseDto.class);
     }
-    
-	@Path("/")
-	@GET
-	@Produces({ MediaType.APPLICATION_JSON })
-	public AllResultResponseDto getAllResult() {
-		AllResultResponseDto allResultResp = new AllResultResponseDto();
-		List<GameResult> allGameResult = gameUserDataManager.getAllResult();
-		for (GameResult gameResult : allGameResult) {
-			allResultResp.addGameResult(this.dozerMapper.map(gameResult, ResultResponseDto.class));
-		}
-		return allResultResp;
-	}
+
+    public AllResultResponseDto getAllResult() {
+        AllResultResponseDto allResultResp = new AllResultResponseDto();
+        List<GameResult> allGameResult = gameUserDataManager.getAllResult();
+        for (GameResult gameResult : allGameResult) {
+            allResultResp.addGameResult(this.dozerMapper.map(gameResult, ResultResponseDto.class));
+        }
+        return allResultResp;
+    }
 }

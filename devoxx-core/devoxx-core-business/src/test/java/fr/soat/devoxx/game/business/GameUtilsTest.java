@@ -23,11 +23,9 @@
  */
 package fr.soat.devoxx.game.business;
 
-import static org.junit.Assert.assertEquals;
-
 import org.junit.Test;
 
-import javax.inject.Inject;
+import static org.junit.Assert.assertEquals;
 
 
 /**
@@ -36,12 +34,12 @@ import javax.inject.Inject;
  * Time: 11:58
  */
 public class GameUtilsTest {
-	
-	private static final String GAME_QUESTION_FILE_PATH_TEST="question.properties";
+
+    private static final String GAME_QUESTION_FILE_PATH_TEST = "question.properties";
 
     GameUtils propertiesUtils = new GameUtils();
 
-	@Test
+    @Test
     public void getQuestionFilePathShouldReturnAnEmptySizeIfPropertiesAreNotFound() {
 //		GameUtils propertiesUtils = GameUtils;
         propertiesUtils.setConfiguration("nothing");
@@ -54,5 +52,5 @@ public class GameUtilsTest {
         propertiesUtils.reload();
         assertEquals(GAME_QUESTION_FILE_PATH_TEST, propertiesUtils.getQuestionFilePath());
     }
-	
+
 }

@@ -82,11 +82,11 @@
             <scope>provided</scope>
         </dependency>
 
-        <dependency>
-            <groupId>javax.enterprise</groupId>
-            <artifactId>cdi-api</artifactId>
-            <scope>provided</scope>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>javax.enterprise</groupId>-->
+            <!--<artifactId>cdi-api</artifactId>-->
+            <!--<scope>provided</scope>-->
+        <!--</dependency>-->
 
         <!-- Import the Common Annotations API (JSR-250), we use provided scope
 as the API is included in JBoss AS 7 -->

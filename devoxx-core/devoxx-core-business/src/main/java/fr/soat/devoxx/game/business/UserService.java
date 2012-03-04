@@ -25,15 +25,13 @@ package fr.soat.devoxx.game.business;
 
 import fr.soat.devoxx.game.business.admin.AdminUserService;
 import fr.soat.devoxx.game.business.exception.InvalidUserException;
+import fr.soat.devoxx.game.business.exception.UserServiceException;
 import fr.soat.devoxx.game.pojo.UserRequestDto;
 import fr.soat.devoxx.game.pojo.UserResponseDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import javax.inject.Inject;
-import javax.ws.rs.*;
-import javax.ws.rs.core.MediaType;
 
 /**
  * User: khanh
@@ -41,17 +39,13 @@ import javax.ws.rs.core.MediaType;
  * Time: 14:12
  */
 @Component
-@Path("/services/user")
 public class UserService {
     private final static Logger LOGGER = LoggerFactory.getLogger(UserService.class);
 
-    @Inject
+    @Autowired
     private AdminUserService delegate;
 
-    @Path("/")
-    @POST
-    @Produces(MediaType.APPLICATION_JSON)
-    public UserResponseDto createUser(@FormParam("urlId") String urlId, @FormParam("username") String name, @FormParam("mail") String mail) throws InvalidUserException {
+    public UserResponseDto createUser(String urlId, String name, String mail) throws InvalidUserException, UserServiceException {
         UserRequestDto userRequestDto = new UserRequestDto();
         userRequestDto.setUrlId(urlId);
         userRequestDto.setName(name);
@@ -60,10 +54,7 @@ public class UserService {
         return delegate.createUser(userRequestDto);
     }
 
-    @Path("/{userId}")
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    public UserResponseDto getUser(@PathParam("userId") Long userId) {
+    public UserResponseDto getUser(Long userId) throws UserServiceException {
         return delegate.getUser(userId);
     }
 }
