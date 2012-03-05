@@ -14,7 +14,6 @@
 
 
 	<properties>
-		<spring.version>3.1.0.RELEASE</spring.version>
 		<tiles.version>2.2.2</tiles.version>
 		<jstl.version>1.2</jstl.version>
 		<taglibs.verion>1.1.2</taglibs.verion>
@@ -90,7 +89,6 @@
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-core</artifactId>
-			<version>${spring.version}</version>
 		</dependency>
 
 		<dependency>
@@ -108,7 +106,6 @@
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context</artifactId>
-			<version>${spring.version}</version>
 		</dependency>
 
 		<dependency>
@@ -121,19 +118,16 @@
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-core</artifactId>
-			<version>${spring.version}</version>
 		</dependency>
 		
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-web</artifactId>
-			<version>${spring.version}</version>
 		</dependency>
 		
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-config</artifactId>
-			<version>${spring.version}</version>
 		</dependency>
 		
 		<dependency>
@@ -145,7 +139,6 @@
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-openid</artifactId>
-			<version>${spring.version}</version>
 		</dependency>
 
 		<!-- Apache Tiles 2 dependencies -->

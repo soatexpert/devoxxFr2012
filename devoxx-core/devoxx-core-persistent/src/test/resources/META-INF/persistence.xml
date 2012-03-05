@@ -19,7 +19,7 @@
 
 
             <property name="javax.persistence.jdbc.driver" value="org.hsqldb.jdbcDriver"/>
-            <property name="javax.persistence.jdbc.url" value="jdbc:hsqldb:mem:test"/>
+            <property name="javax.persistence.jdbc.url" value="jdbc:hsqldb:mem:test;sql.syntax_ora=true;shutdown=true"/>
             <property name="javax.persistence.jdbc.user" value="sa"/>
             <property name="javax.persistence.jdbc.password" value=""/>
             <property name="eclipselink.target-database"
@@ -27,7 +27,8 @@
             <property name="eclipselink.logging.level" value="OFF"/>
             <property name="eclipselink.orm.throw.exceptions" value="true"/>
 
-            <property name="eclipselink.ddl-generation" value="drop-and-create-tables"/>
+            <!--<property name="eclipselink.ddl-generation" value="drop-and-create-tables"/>-->
+            <property name="eclipselink.ddl-generation" value="update"/>
             <property name="eclipselink.ddl-generation.output-mode" value="database"/>
         </properties>
 
