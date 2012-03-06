@@ -23,10 +23,9 @@
  */
 package fr.soat.devoxx.game.business.admin;
 
-import fr.soat.devoxx.game.admin.pojo.GameUserDataManager;
-import fr.soat.devoxx.game.business.exception.InvalidUserException;
-import fr.soat.devoxx.game.pojo.UserRequestDto;
-import fr.soat.devoxx.game.pojo.UserResponseDto;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 
 import org.apache.commons.lang.StringUtils;
 import org.junit.Before;
@@ -38,10 +37,11 @@ import org.powermock.core.classloader.annotations.PowerMockIgnore;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
-
-import static org.junit.Assert.*;
+import fr.soat.devoxx.game.admin.pojo.GameUserDataManager;
+import fr.soat.devoxx.game.business.exception.InvalidUserException;
+import fr.soat.devoxx.game.business.exception.UserServiceException;
+import fr.soat.devoxx.game.pojo.UserRequestDto;
+import fr.soat.devoxx.game.pojo.UserResponseDto;
 
 /**
  * User: khanh
@@ -58,7 +58,7 @@ public class AdminUserServiceTest {
     public static final String TEST_URLID = "http://toto.myopenid.com/";
 
     @Before
-    public void init() {
+    public void init() throws UserServiceException {
         GameUserDataManager gameUserDataManager = PowerMockito.mock(GameUserDataManager.class);
 //        when(gameUserDataManager.)
 
@@ -72,7 +72,7 @@ public class AdminUserServiceTest {
     }
 
     @Test
-    public void createUserShouldReturnAToken() throws InvalidUserException {
+    public void createUserShouldReturnAToken() throws InvalidUserException, UserServiceException {
 		UserRequestDto userRequestDto = new UserRequestDto();
 		userRequestDto.setUrlId(TEST_URLID);
 		userRequestDto.setMail("toto@gmail.com");
@@ -83,7 +83,7 @@ public class AdminUserServiceTest {
 
 
     @Test(expected = InvalidUserException.class) @Ignore("Email is not mandatory")
-    public void createUserWithInvalidMailShouldThrowException() throws InvalidUserException {
+    public void createUserWithInvalidMailShouldThrowException() throws InvalidUserException, UserServiceException {
         UserRequestDto user = new UserRequestDto();
         user.setUrlId(TEST_URLID);
         user.setMail("toto@gmailcom");
@@ -91,7 +91,7 @@ public class AdminUserServiceTest {
     }
 
     @Test(expected = InvalidUserException.class) @Ignore("Email is not mandatory")
-    public void createUserWithInvalidMail2ShouldThrowException() throws InvalidUserException {
+    public void createUserWithInvalidMail2ShouldThrowException() throws InvalidUserException, UserServiceException {
 		UserRequestDto user = new UserRequestDto();
 		user.setUrlId(TEST_URLID);
 		user.setMail("totogmailcom");
@@ -99,7 +99,7 @@ public class AdminUserServiceTest {
     }
 
     @Test(expected = InvalidUserException.class) @Ignore("Email is not mandatory")
-    public void createUserWithInvalidMail3ShouldThrowException() throws InvalidUserException {
+    public void createUserWithInvalidMail3ShouldThrowException() throws InvalidUserException, UserServiceException {
         UserRequestDto user = new UserRequestDto();
         user.setUrlId(TEST_URLID);
         user.setMail(null);
@@ -107,7 +107,7 @@ public class AdminUserServiceTest {
     }
 
     @Test(expected = InvalidUserException.class)
-    public void createUserWithInvalidUrlIdShouldThrowException() throws InvalidUserException {
+    public void createUserWithInvalidUrlIdShouldThrowException() throws InvalidUserException, UserServiceException {
         UserRequestDto user = new UserRequestDto();
         user.setUrlId("to");
         user.setMail("toto@gmailcom");
@@ -115,7 +115,7 @@ public class AdminUserServiceTest {
     }
 
     @Test(expected = InvalidUserException.class)
-    public void createUserWithInvalidUrlId2ShouldThrowException() throws InvalidUserException {
+    public void createUserWithInvalidUrlId2ShouldThrowException() throws InvalidUserException, UserServiceException {
         UserRequestDto user = new UserRequestDto();
         user.setUrlId(null);
         user.setMail("toto@gmailcom");
@@ -123,7 +123,7 @@ public class AdminUserServiceTest {
     }
 
     @Test
-    public void generateAValidUserShouldSuccessAndBePersist() throws InvalidUserException {
+    public void generateAValidUserShouldSuccessAndBePersist() throws InvalidUserException, UserServiceException {
         UserRequestDto userRequest = new UserRequestDto();
         userRequest.setUrlId(TEST_URLID);
         userRequest.setMail("toto@gmail.com");

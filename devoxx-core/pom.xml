@@ -11,7 +11,7 @@
         <version>1.0.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>devoxx-core-parent</artifactId>
+    <artifactId>devoxx-core</artifactId>
     <packaging>pom</packaging>
 
     <modules>

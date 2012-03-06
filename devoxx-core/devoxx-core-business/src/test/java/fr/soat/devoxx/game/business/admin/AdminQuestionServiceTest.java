@@ -42,7 +42,6 @@ import org.powermock.core.classloader.annotations.PowerMockIgnore;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
-import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.Collections;
 

@@ -23,23 +23,26 @@
  */
 package fr.soat.devoxx.game.admin.pojo;
 
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import java.util.List;
+
+import org.junit.Before;
+import org.junit.Test;
+
 import com.google.code.morphia.Datastore;
 import com.google.code.morphia.query.FieldEnd;
 import com.google.code.morphia.query.Query;
 import com.google.common.collect.Lists;
+
 import fr.soat.devoxx.game.admin.pojo.exception.StorageException;
 import fr.soat.devoxx.game.pojo.question.ResponseType;
-import org.junit.Before;
-import org.junit.Test;
-
-import javax.inject.Inject;
-import java.util.List;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.*;
 
 /**
  * User: khanh
