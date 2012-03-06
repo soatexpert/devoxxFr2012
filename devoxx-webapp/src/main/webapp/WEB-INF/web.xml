@@ -6,10 +6,8 @@
 
 
     <absolute-ordering>
-        <name>devoxx-admin-client</name>
-        <name>devoxx-core-webapp</name>
-        <name>devoxx-client</name>
-
+        <name>devoxx_client</name>
+        <name>devoxx_core_webapp</name>
     </absolute-ordering>
 
     <!--<servlet-mapping>-->

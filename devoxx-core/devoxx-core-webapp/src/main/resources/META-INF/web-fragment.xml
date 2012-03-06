@@ -4,7 +4,7 @@
               xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-fragment_3_0.xsd"
               version="3.0">
 
-    <name>devoxx-core-webapp</name>
+    <name>devoxx_core_webapp</name>
 
     <servlet>
         <servlet-name>javax.ws.rs.core.Application</servlet-name>

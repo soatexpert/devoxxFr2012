@@ -58,13 +58,13 @@
 
         <dependency>
             <groupId>fr.soat.devoxxfr.game</groupId>
-            <artifactId>devoxx-client</artifactId>
+            <artifactId>devoxx-client-front</artifactId>
             <version>1.0.0-SNAPSHOT</version>
         </dependency>
         
-         <dependency>
+        <dependency>
             <groupId>fr.soat.devoxxfr.game</groupId>
-            <artifactId>devoxx-admin-client</artifactId>
+            <artifactId>devoxx-client-admin</artifactId>
             <version>1.0.0-SNAPSHOT</version>
         </dependency>
 
