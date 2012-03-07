@@ -27,6 +27,7 @@ import fr.soat.devoxx.game.admin.pojo.Game;
 import fr.soat.devoxx.game.admin.pojo.GameUserDataManager;
 import fr.soat.devoxx.game.admin.pojo.dto.QuestionRequestDto;
 import fr.soat.devoxx.game.admin.pojo.exception.StorageException;
+import fr.soat.devoxx.game.business.exception.QuestionServiceException;
 import fr.soat.devoxx.game.business.question.Question;
 import fr.soat.devoxx.game.business.question.QuestionManager;
 import fr.soat.devoxx.game.business.question.Response;
@@ -87,19 +88,22 @@ public class AdminQuestionService {
         return dozerMapper.map(questionManager.loadQuestions().getRandomQuestion(), QuestionResponseDto.class);
     }
 
-    public void addQuestion(QuestionRequestDto questionRequest) {
+    public void addQuestion(QuestionRequestDto questionRequest) throws QuestionServiceException {
         //TODO add question processing
+        throw new QuestionServiceException();
     }
 
-    public void updateQuestion(Integer questionId, QuestionRequestDto questionRequest) {
+    public void updateQuestion(Integer questionId, QuestionRequestDto questionRequest) throws QuestionServiceException {
         //TODO update question processing
+        throw new QuestionServiceException();
     }
 
-    public void updateQuestion(Integer questionId) {
+    public void deleteQuestion(Integer questionId) throws QuestionServiceException {
         //TODO delete question processing
+        throw new QuestionServiceException();
     }
 
-    public AllQuestionResponseDto getAllQuestions(Long userId) {
+    public AllQuestionResponseDto getAllQuestionsByUser(Long userId) {
         List<Game> games = gameUserDataManager.getGamesByResultType(userId, ResponseType.NEED_RESPONSE);
         AllQuestionResponseDto results = new AllQuestionResponseDto();
         for (Game game : games) {

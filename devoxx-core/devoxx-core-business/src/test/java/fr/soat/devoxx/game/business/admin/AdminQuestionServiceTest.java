@@ -291,7 +291,7 @@ public class AdminQuestionServiceTest {
         when(gameUserDataManager.getGamesByResultType(1L, ResponseType.NEED_RESPONSE)).thenReturn(Lists.newArrayList(game1));
 
         //when
-        AllQuestionResponseDto results = adminQuestionService.getAllQuestions(1L);
+        AllQuestionResponseDto results = adminQuestionService.getAllQuestionsByUser(1L);
 
         //then
         assertNotNull(results);

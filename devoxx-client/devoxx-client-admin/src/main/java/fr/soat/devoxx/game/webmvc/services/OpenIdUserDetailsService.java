@@ -53,7 +53,8 @@ public class OpenIdUserDetailsService implements UserDetailsService, Authenticat
     AdminUserService adminUserService;
 
     private static Logger LOGGER = LoggerFactory.getLogger(OpenIdUserDetailsService.class);
-    private static final List<GrantedAuthority> DEFAULT_AUTHORITIES = AuthorityUtils.createAuthorityList("ROLE_USER");
+    //TODO Test value=ROLE_ADMIN -> prod=ROLE_USER
+    private static final List<GrantedAuthority> DEFAULT_AUTHORITIES = AuthorityUtils.createAuthorityList("ROLE_ADMIN");
 
     @Override
     public UserDetails loadUserByUsername(String urlId) throws UsernameNotFoundException {

@@ -7,10 +7,12 @@
             <img style="width: 120px; height: 120px;" src="http://www.gravatar.com/avatar/${mailHash}?s=120" alt="gravatar" />
             </div>
     	</td>
-        <td>            
-            <div>Name : ${userResponse.name}</div>
-            <div>Mail : ${userResponse.mail}</div>
-            <div>Token : ${userResponse.token}</div>
+        <td>  
+            <div>UserID : ${userResponse.id}</div>
+            <div>OpenID : ${userResponse.urlId}</div>          
+            <div>Name   : ${userResponse.name}</div>
+            <div>Mail   : ${userResponse.mail}</div>
+            <div>Token  : ${userResponse.token}</div>
         </td>
     </tr>
 </table>

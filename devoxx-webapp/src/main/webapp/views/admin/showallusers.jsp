@@ -3,19 +3,21 @@
 <div class="center" id="allUsersContainer">
 	<table class="jtable" id="allUsersTable">
 		<tr>
+		    <th><spring:message code="admin.user.id" text="Id" /></th>
 			<th><spring:message code="admin.user.name" text="Username" /></th>
-			<th><spring:message code="admin.user.mail" text="Email" /></th>
+			<th><spring:message code="admin.user.openid" text="Open ID" /></th>
 			<th><spring:message code="admin.label.action" text="Action" /></th>
 		</tr>
 		<c:forEach items="${allUserResponses}" var="userResponse">
 			<tr>
+			    <td>${userResponse.id}</td>
 				<td>${userResponse.name}</td>
-				<td>${userResponse.mail}</td>
+				<td>${userResponse.urlId}</td>
 				<td>
-				<a href='<c:url value="/admin/user/${userResponse.name}" />' class="ui-btn">
+				<a href='<c:url value="/admin/user/${userResponse.id}" />' class="ui-btn">
 				<spring:message code="admin.btn.show" text="Show" /></a>
 				&nbsp;
-				<a href='<c:url value="/admin/user/${userResponse.name}/delete" />' class="ui-btn">
+				<a href='<c:url value="/admin/user/${userResponse.id}/delete" />' class="ui-btn">
 	            <spring:message code="admin.btn.delete" text="Remove" /></a>
 				</td>
 			</tr>

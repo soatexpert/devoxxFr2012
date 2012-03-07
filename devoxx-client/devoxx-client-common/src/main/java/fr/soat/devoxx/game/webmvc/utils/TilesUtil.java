@@ -28,8 +28,11 @@ public interface TilesUtil {
 	public static final String DFR_INDEX_PAGE = "devoxxfr.index";
 	/* AdminController Pages */
 	public static final String DFR_ADMIN_INDEX_PAGE = "devoxxfr.admin.index";
+	/* AdminUserController Pages */
 	public static final String DFR_ADMIN_SHOWALLUSERS_PAGE = "devoxxfr.admin.showallusers";
 	public static final String DFR_ADMIN_SHOWUSER_PAGE = "devoxxfr.admin.showuser";
+	/* AdminQuestionController Pages */
+	public static final String DFR_ADMIN_SHOWQUESTION_PAGE = "devoxxfr.admin.showquestion";
 	/* AuthController Pages */
 	public static final String DFR_AUTH_LOGIN_PAGE = "devoxxfr.auth.login";
 	/* Common pages */

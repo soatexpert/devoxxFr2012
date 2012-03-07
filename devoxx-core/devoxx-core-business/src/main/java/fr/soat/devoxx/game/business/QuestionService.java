@@ -65,7 +65,7 @@ public class QuestionService {
     }
 
     public AllQuestionResponseDto getAllQuestions(Long userId) {
-        AllQuestionResponseDto result = delegate.getAllQuestions(userId);
+        AllQuestionResponseDto result = delegate.getAllQuestionsByUser(userId);
         return result;
     }
 
